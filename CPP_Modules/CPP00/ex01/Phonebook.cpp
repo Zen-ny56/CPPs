@@ -153,11 +153,12 @@ std::string format_string(const std::string& str, size_t width)
 void Phonebook::display(int *index, int overflow)
 {
 	(*index) = 0;
-	if (overflow == 42)
+	if (overflow == 0)
 		return ;
-	std::cout << "|   Index  | First Name | Last Name  | Nickname   |\n";
 	while (*index < overflow)
 	{
+		if (*index == 0)
+			std::cout << "|   Index  | First Name | Last Name  | Nickname   |\n";
 		std::cout << "-----------------------------------------------------\n";
 		std::cout << "|     " << *index << "    | ";
 		std::cout << format_string(contacts[*index].get_firstname(), 10) << " | ";
@@ -170,20 +171,26 @@ void Phonebook::display(int *index, int overflow)
 int	Phonebook::search_contact(int *overflow)
 {
 	int num;
-	*overflow = (*overflow) - 1;
+	if (overflow == 0)
+		return (0);
 	std::string uinput;
 	while (1)
 	{
 		std::cout << "Input Index: ";
 		std::getline(std::cin, uinput);
 		if (std::cin.eof()) {return (42);}
+		if (uinput.compare("EXIT") == 0)
+			break ;
 		if (verification(uinput) != 0){
 			std::cout << "Enter something meaningful" << std::endl;
 			continue;
-		} ;
+		};
+		if (Phonebook::is_digit(uinput) == false)
+			break ;
 		std::istringstream iss(uinput);
 		iss >> num;
-		if ((num >= 0 && num <= 8) && (num <= *overflow))
+		std::cout << *overflow << std::endl;
+		if ((num >= 0 && num <= 8) && (num < *overflow))
 		{
 			std::cout << std::endl;
 			std::cout << "First Name: " << contacts[num].get_firstname() << std::endl;
@@ -194,7 +201,7 @@ int	Phonebook::search_contact(int *overflow)
 			std::cout << std::endl;
 			std::cout << "Phone Number: " << contacts[num].get_phone_number() << std::endl;
 			std::cout << std::endl;
-			std::cout << "Darkest Secret " << contacts[num].get_darkest_secret() << std::endl;
+			std::cout << "Darkest Secret: " << contacts[num].get_darkest_secret() << std::endl;
 			std::cout << std::endl;
 			break ;
 		}
