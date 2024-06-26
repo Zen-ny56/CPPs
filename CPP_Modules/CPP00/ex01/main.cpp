@@ -29,7 +29,8 @@ int main(void)
 			std::cout << "Enter Something meaningful" << std::endl;
 		else
 		{
-			if (uinput.compare("ADD") == 0)
+			std::cout << overflow << std::endl;
+			if (uinput.compare("ADD") == 0 && overflow < 9)
 			{
 				std::cout << std::endl;
 				overflow = negus.add_contact(&index);
@@ -41,8 +42,8 @@ int main(void)
 			{
 				negus.display(&index, overflow);
 				if (negus.search_contact(&overflow) == 42)
-					break ;}
-
+					break ;
+			}
 			if (uinput.compare("EXIT") == 0)
 				break;
 		}
