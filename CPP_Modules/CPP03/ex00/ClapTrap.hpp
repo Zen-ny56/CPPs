@@ -22,5 +22,9 @@ class ClapTrap
 		unsigned int get_hitpoints() const;
 		unsigned int get_energypoints() const;
 		unsigned int get_attackdamage() const;
+		void	reduce();
+		void	increase();
+		void	set_energypoints();
+		void	set_attackdamage(unsigned int attack_damage);
 };
 

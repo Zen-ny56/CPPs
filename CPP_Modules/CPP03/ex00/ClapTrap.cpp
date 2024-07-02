@@ -60,23 +60,45 @@ ClapTrap::~ClapTrap()
 	return ;
 }
 
+void	ClapTrap::reduce(){this->hit_points -= 1;}
+
+void	ClapTrap::set_energypoints(){this->energy_points -= 1;}
+
+void	ClapTrap::increase(){this->hit_points += 1;}
+
 void ClapTrap::attack(const std::string &target)
 {
+	// std::cout << hit_points << std::endl;
+	// std::cout << energy_points << std::endl;
+	// std::cout << attack_damage << std::endl;
 	if (energy_points > 0)
 	{
-		std::cout << "ClapTrap" << name << "attacks" << target << "losing 1 energy point" << std::endl;
-		energy_points--;
+		std::cout << "ClapTrap " << name << " attacks " << target << " losing 1 energy point" << std::endl;
+		set_energypoints();
+		std::cout << this->get_energypoints() << std::endl;
 	}
-	else
-		std::cout << "His doesn't have it in him anymore, he can't fight no more" << std::endl;
 }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
 	if (hit_points > 0 && (hit_points >= amount))
 	{
-		std::cout << "ClapTrap"	<< name << "has taken this damage from it's opponent:" << std::endl;
+		std::cout << "ClapTrap " << name << " has taken this damage from it's opponent: " << amount << std::endl;
 		while (amount > 0)
-			hit_points--;
+		{
+			reduce();
+			amount--;
+		}
+		std::cout << "ClapTrap " << name << " has " << hit_points << " left" << std::endl;
 	}
 }
+
+void ClapTrap::beRepaired(unsigned int amount)
+{
+	while (amount > 0)
+	{
+		increase();
+		amount--;
+	}
+	std::cout << "ClapTrap " << name << " has been repaired , it's new health is: " << hit_points << std::endl;
+} 
