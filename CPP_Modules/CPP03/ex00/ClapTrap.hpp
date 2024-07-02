@@ -1,0 +1,26 @@
+#pragma once
+
+#include <iostream>
+#include <string.h>
+class ClapTrap
+{
+	private:
+		const std::string name;
+		unsigned int hit_points;//Health
+		unsigned int energy_points;//Stamina
+		unsigned int attack_damage;//Damage taken
+	public:
+		ClapTrap();
+		ClapTrap(const std::string name);
+		ClapTrap(const ClapTrap& copy);
+		ClapTrap& operator=(const ClapTrap& copy);
+		~ClapTrap();
+		void	attack(const std::string &target);
+		void	takeDamage(unsigned int amount);
+		void 	beRepaired(unsigned int amount);
+		std::string get_name() const;
+		unsigned int get_hitpoints() const;
+		unsigned int get_energypoints() const;
+		unsigned int get_attackdamage() const;
+};
+
