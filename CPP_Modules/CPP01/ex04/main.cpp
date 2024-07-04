@@ -32,6 +32,7 @@ void replaceAndWrite(std::ifstream &infile, std::ofstream &outfile, const std::s
 
 int main(int ac, char **av)
 {
+	/*Compilation errors*/
 	if (ac != 4)
 	{
 		std::cerr << "3 parameters allowed" << std::endl;
