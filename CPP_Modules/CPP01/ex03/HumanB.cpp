@@ -26,5 +26,5 @@ void    HumanB::attack()
 		std::cout << name << " attacks with their " << weapon->getType() << std::endl;
 	}
 	else
-		std::cout << name << "Does not have a weapon yet" << std::endl;
+		std::cout << name << " does not have a weapon yet" << std::endl;
 }
