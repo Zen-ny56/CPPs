@@ -21,12 +21,13 @@ int main(int ac, char **av)
 	else
 	{
 		int i = 1;
-		int j = 0;
 		while (i < ac)
 		{
+			int j = 0;
 			while (av[i][j])
 			{
-				std::cout << (char)std::toupper(av[i][j]);
+				if (!(char)std::isalpha(av[i][j]))
+					std::cout << (char)std::toupper(av[i][j]);
 				j++;
 			}
 			i++;
