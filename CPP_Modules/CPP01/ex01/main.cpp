@@ -14,8 +14,8 @@
 
 int main()
 {
-    int n = 4;
-    Zombie* horde = zombieHorde(n, "Zombies");
+    int n = 9;
+    Zombie* horde = zombieHorde(n, "Goons");
     int i = 0;
     while (i < n)
     {
