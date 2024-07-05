@@ -14,6 +14,7 @@
 
 #include "Contact.hpp"
 #include <string>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -21,6 +22,7 @@ class   Phonebook
 {
     private: 
         Contact contacts[8];
+        int     oldestIndex;
     public:
         Phonebook();
         ~Phonebook();

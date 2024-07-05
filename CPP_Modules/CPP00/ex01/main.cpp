@@ -12,6 +12,7 @@
 
 #include "Contact.hpp"
 #include "Phonebook.hpp"
+
 int main(void)
 {
 	Phonebook negus;
@@ -30,13 +31,13 @@ int main(void)
 		else
 		{
 			// std::cout << overflow << std::endl;
-			if (uinput.compare("ADD") == 0 && overflow < 9)
+			if (uinput.compare("ADD") == 0)
 			{
 				std::cout << std::endl;
 				overflow = negus.add_contact(&index);
-				if (overflow == 42)
-					break;
-				negus.display(&index, overflow);
+				// if (overflow == 42)
+				// 	break;
+				// negus.display(&index, overflow);
 			}
 			if (uinput.compare("SEARCH") == 0 && (overflow > 0))
 			{

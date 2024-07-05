@@ -12,7 +12,11 @@
 
 #include "Phonebook.hpp"
 
-Phonebook::Phonebook(){};
+Phonebook::Phonebook()
+{
+	oldestIndex = 0;
+};
+
 Phonebook::~Phonebook(){};
 
 void   Phonebook::welcome()
@@ -30,16 +34,19 @@ void   Phonebook::welcome()
 int   Phonebook::add_contact(int *index)
 {
 	int d_index = 0;
+	int temp = 0;
+	std::cout << "Index for adding details: " << d_index << std::endl;
 	std::string uinput;
-	if (*index < 8)
+	if(*index == 8)
 	{
-		while (d_index < 5)
-		{
-			d_index = add_details(uinput, index, &d_index);
-			std::cout << std::endl;
-		}
-		d_index = 0;
+		
 	}
+	while (d_index < 5)
+	{
+		d_index = add_details(uinput, index, &d_index);
+		std::cout << std::endl;
+	}
+	d_index = 0;
 	(*index)++;
 	return (*index);
 }
