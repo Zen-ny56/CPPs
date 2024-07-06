@@ -17,7 +17,6 @@ int main(void)
 {
 	Phonebook negus;
 	int     index = 0;
-	int		overflow = 0;
 	std::string uinput;
 	negus.welcome();
 	while (1)
@@ -34,17 +33,16 @@ int main(void)
 			if (uinput.compare("ADD") == 0)
 			{
 				std::cout << std::endl;
-				overflow = negus.add_contact(&index);
+				negus.add_contact(&index);
 				// if (overflow == 42)
 				// 	break;
-				// negus.display(&index, overflow);
 			}
-			if (uinput.compare("SEARCH") == 0 && (overflow > 0))
-			{
-				negus.display(&index, overflow);
-				if (negus.search_contact(&overflow) == 42)
-					break ;
-			}
+			// if (uinput.compare("SEARCH") == 0)
+			// {
+			// 	negus.display(&index, overflow);
+			// 	if (negus.search_contact(&overflow) == 42)
+			// 		break ;
+			// }
 			if (uinput.compare("EXIT") == 0)
 				break;
 		}

@@ -14,10 +14,14 @@
 
 Phonebook::Phonebook()
 {
-	oldestIndex = 0;
-};
+	ccount = 0;
+	std::cout << "Phonebook default constructor has been called" << std::endl;
+}
 
-Phonebook::~Phonebook(){};
+Phonebook::~Phonebook()
+{
+	std::cout << "Phonebook deconstructor has been called" << std::endl;
+};
 
 void   Phonebook::welcome()
 {
@@ -31,99 +35,75 @@ void   Phonebook::welcome()
 	std::cout << std::endl;
 }
 
-int   Phonebook::add_contact(int *index)
+
+int	  Phonebook::ver(std::string uinput)
 {
-	int d_index = 0;
-	int temp = 0;
-	std::cout << "Index for adding details: " << d_index << std::endl;
-	std::string uinput;
-	if(*index == 8)
+	if (std::cin.eof()){return (42);}
+	if (!verification(uinput))
 	{
-		
+		std::cout << "Enter any character apart from a whitespace" << std::endl;
+		return (-1);		
 	}
-	while (d_index < 5)
-	{
-		d_index = add_details(uinput, index, &d_index);
-		std::cout << std::endl;
-	}
-	d_index = 0;
-	(*index)++;
-	return (*index);
+	if (uinput.compare("EXIT")){return (1);}
+	return (0);
 }
 
-int Phonebook::add_details(std::string uinput, int *index, int *d_index)
+int   Phonebook::add_contact(int *index)
 {
-	if (*d_index == 0)
-	{
-		std::cout << "First Name: ";
-		std::getline(std::cin, uinput);
-		if (std::cin.eof()){return (42);}
-		if (verification(uinput) == 0)
-		{
-			contacts[*index].set_firstname(uinput);
-			(*d_index)++;
-		}
-		return (*d_index);
-	}
-	else if (*d_index == 1)
-	{
-		std::cout << "Last Name: ";
-		std::getline(std::cin, uinput);
-		if (std::cin.eof()){return (42);}
-		if (verification(uinput) == 0)
-		{
-			contacts[*index].set_lastname(uinput);
-			(*d_index)++;
-		}
-		return (*d_index);
-	}
-	else if  (*d_index == 2)
-	{
-		std::cout <<  "Nickname: ";
-		std::getline(std::cin, uinput);
-		if (std::cin.eof()){return (42);}
-		if (verification(uinput) == 0)
-		{
-			contacts[*index].set_nickname(uinput);
-			(*d_index)++;
-		}
-		return (*d_index);
-	}
-	else if (*d_index == 3)
-	{
-		while (1)
-		{
-			std::cout << "Phone Number: ";
-			std::getline(std::cin, uinput);
-			if (std::cin.eof()){return (42);}
-			if (verification(uinput) == 0)
-			{
-				if (is_digit(uinput) == false)
-				{
-					std::cout << "Enter something meaningful";
-					std::cout << std::endl;
-					continue;
-				}
-				contacts[*index].set_phone_number(uinput);
-				(*d_index)++;
-				break ;
-			}
-		}
-		return (*d_index);
-	}
-	else if (*d_index == 4)
-	{
-		std::cout << "Darkest Secret: ";
-		std::getline(std::cin, uinput);
-		if (std::cin.eof()) {return (42);}
-		if (verification(uinput) == 0)
-		{
-			contacts[*index].set_darkest_secret(uinput);
-			(*d_index)++;
-		}
-		return (*d_index);
-	}
+	//Creating single object and filling values of that object
+	Contact new_contact;
+	int i = 0;
+	std::string uinput;
+	//Add First Name
+	std::cout << "First Name: ";
+	std::getline(std::cin, uinput);
+	if (ver(uinput) != 0)
+		return (ver(uinput));
+	new_contact.set_firstname(uinput);
+	std::cout << std::endl;
+	//Add Last Name
+	std::cout << "Last Name: ";
+	std::getline(std::cin, uinput);
+	if (ver(uinput) != 0)
+		return (ver(uinput));
+	new_contact.set_lastname(uinput);
+	std::cout << std::endl;
+	//Add Nickname
+	std::cout << "Nick Name: ";
+	std::getline(std::cin, uinput);
+	if (ver(uinput) != 0)
+		return (ver(uinput));
+	new_contact.set_nickname(uinput);
+	std::cout << std::endl;
+	//Add Phonenumber
+	std::cout << "Phone Number: ";
+	std::getline(std::cin, uinput);
+	if (ver(uinput) != 0)
+		return (ver(uinput));
+	if (is_digit(uinput) == false)
+		return (1);
+	new_contact.set_phone_number(uinput);
+	std::cout << std::endl;
+	//Add Darkest Secret
+	std::cout << "Darkest Secret: ";
+	std::getline(std::cin, uinput);
+	if (ver(uinput) != 0)
+		return (ver(uinput));
+	new_contact.set_darkest_secret(uinput);
+	std::cout << std::endl;
+	//Adding object created to the array of objects & keeping
+	contacts[*index] = new_contact;
+	*index = (*index + 1) % 8;
+	increment_ccount(ccount);
 	return (0);
+}
+
+
+//Keeping count of contacts
+void	increment_ccount(int ccount)
+{
+	if (ccount < 8)
+		ccount++;
 }
 
 int	Phonebook::verification(std::string uinput)
@@ -159,12 +139,10 @@ std::string format_string(const std::string& str, size_t width)
 
 void Phonebook::display(int *index, int overflow)
 {
-	(*index) = 0;
-	if (overflow == 0)
-		return ;
-	while (*index < overflow)
+	int temp = 0;
+	while (temp < *index)
 	{
-		if (*index == 0)
+		if (temp == 0)
 			std::cout << "|   Index  | First Name | Last Name  | Nickname   |\n";
 		std::cout << "-----------------------------------------------------\n";
 		std::cout << "|     " << *index << "    | ";

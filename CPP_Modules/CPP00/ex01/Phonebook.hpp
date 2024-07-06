@@ -22,10 +22,13 @@ class   Phonebook
 {
     private: 
         Contact contacts[8];
-        int     oldestIndex;
+        int     ccount;
     public:
+        //Constructor and Deconstructor
         Phonebook();
         ~Phonebook();
+        //Contact count
+        //Methods
         void    welcome();
         int    add_contact(int *index);
         int    add_details(std::string uinput, int *index, int *d_index);
@@ -33,4 +36,7 @@ class   Phonebook
         void   display(int *index, int overflow);
         int    search_contact(int *overflow);
         bool   is_digit(const std::string& str);
+        int    ver(std::string uinput);
+        void   increment_ccount(int ccount);
+        int    get_ccount();
 };
