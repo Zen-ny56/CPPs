@@ -36,15 +36,15 @@ void   Phonebook::welcome()
 }
 
 
-int	  Phonebook::ver(std::string uinput)
+int	  Phonebook::ver(std::string& uinput)
 {
 	if (std::cin.eof()){return (42);}
-	if (!verification(uinput))
+	if (verification(uinput) == 1)
 	{
-		std::cout << "Enter any character apart from a whitespace" << std::endl;
+		// std::cout << "Enter any character apart from a whitespace" << std::endl;
 		return (-1);		
 	}
-	if (uinput.compare("EXIT")){return (1);}
+	if (uinput.compare("EXIT") == 0){return (1);}
 	return (0);
 }
 
@@ -54,66 +54,106 @@ int   Phonebook::add_contact(int *index)
 	Contact new_contact;
 	int i = 0;
 	std::string uinput;
-	//Add First Name
-	std::cout << "First Name: ";
-	std::getline(std::cin, uinput);
-	if (ver(uinput) != 0)
-		return (ver(uinput));
-	new_contact.set_firstname(uinput);
-	std::cout << std::endl;
-	//Add Last Name
-	std::cout << "Last Name: ";
-	std::getline(std::cin, uinput);
-	if (ver(uinput) != 0)
-		return (ver(uinput));
-	new_contact.set_lastname(uinput);
-	std::cout << std::endl;
-	//Add Nickname
-	std::cout << "Nick Name: ";
-	std::getline(std::cin, uinput);
-	if (ver(uinput) != 0)
-		return (ver(uinput));
-	new_contact.set_nickname(uinput);
-	std::cout << std::endl;
-	//Add Phonenumber
-	std::cout << "Phone Number: ";
-	std::getline(std::cin, uinput);
-	if (ver(uinput) != 0)
-		return (ver(uinput));
-	if (is_digit(uinput) == false)
-		return (1);
-	new_contact.set_phone_number(uinput);
-	std::cout << std::endl;
-	//Add Darkest Secret
-	std::cout << "Darkest Secret: ";
-	std::getline(std::cin, uinput);
-	if (ver(uinput) != 0)
-		return (ver(uinput));
-	new_contact.set_darkest_secret(uinput);
-	std::cout << std::endl;
+	while (i < 5)
+	{
+		//Add First Name
+		if (i == 0)
+		{
+			std::cout << "First Name: ";
+			std::getline(std::cin, uinput);
+			if (ver(uinput) > 0)
+				return (ver(uinput));
+			else if (ver(uinput) == -1)
+				continue;
+			new_contact.set_firstname(uinput);
+			i++;
+			std::cout << std::endl;
+			continue;
+		}
+		//Add Last Name
+		else if (i == 1)
+		{
+			std::cout << "Last Name: ";
+			std::getline(std::cin, uinput);
+			if (ver(uinput) > 0)
+				return (ver(uinput));
+			else if (ver(uinput) == -1)
+				continue;
+			new_contact.set_lastname(uinput);
+			i++;
+			std::cout << std::endl;
+			continue;
+		}
+		//Add Nickname
+		else if (i == 2)
+		{
+			std::cout << "Nick Name: ";
+			std::getline(std::cin, uinput);
+			if (ver(uinput) > 0)
+				return (ver(uinput));
+			else if (ver(uinput) == -1)
+				continue;
+			new_contact.set_nickname(uinput);
+			i++;
+			std::cout << std::endl;
+			continue;
+		}
+		//Add Phonenumber
+		else if (i == 3)
+		{
+			std::cout << "Phone Number: ";
+			std::getline(std::cin, uinput);
+			if (ver(uinput) > 0)
+				return (ver(uinput));
+			if (is_digit(uinput) == false || ver(uinput) == -1)
+			{
+				std::cout << "Only enter digits" << std::endl;
+				continue;
+			}
+			new_contact.set_phone_number(uinput);
+			i++;
+			std::cout << std::endl;
+			continue;
+		}
+		//Add Darkest Secret
+		else if (i == 4)
+		{
+			std::cout << "Darkest Secret: ";
+			std::getline(std::cin, uinput);
+			if (ver(uinput) > 0)
+				return (ver(uinput));
+			else if (ver(uinput) == -1)
+				continue;
+			new_contact.set_darkest_secret(uinput);
+			i++;
+			std::cout << std::endl;
+			continue;
+		}
+	}
 	//Adding object created to the array of objects & keeping
 	contacts[*index] = new_contact;
 	*index = (*index + 1) % 8;
-	increment_ccount(ccount);
+	increment_ccount(&ccount);
 	return (0);
 }
 
 
 //Keeping count of contacts
-void	increment_ccount(int ccount)
+void	Phonebook::increment_ccount(int *ccount)
 {
-	if (ccount < 8)
-		ccount++;
+	if ((*ccount) < 8)
+		(*ccount)++;
+}
+
+int		Phonebook::get_ccount()
+{
+	return (ccount);
 }
 
 int	Phonebook::verification(std::string uinput)
 {
-
 	if (uinput.find_first_not_of("\t\n\v\f\r") == std::string::npos)
-	{
-		std::cout << "Enter Something meaningful" << std::endl;
 		return (1);
-	}
 	return (0);
 }
 
@@ -133,69 +173,58 @@ std::string format_string(const std::string& str, size_t width)
 {
 	if (str.length() > width)
 		return (str.substr(0, width - 1) + ".");
-	else
-		return (std::string(width - str.length(), ' ') + str);
+	return (str);
 }
 
-void Phonebook::display(int *index, int overflow)
+void Phonebook::display()
 {
-	int temp = 0;
-	while (temp < *index)
+	int temp = get_ccount();
+	int i = -1;
+	if (temp == 0)
 	{
-		if (temp == 0)
-			std::cout << "|   Index  | First Name | Last Name  | Nickname   |\n";
-		std::cout << "-----------------------------------------------------\n";
-		std::cout << "|     " << *index << "    | ";
-		std::cout << format_string(contacts[*index].get_firstname(), 10) << " | ";
-		std::cout << format_string(contacts[*index].get_lastname(), 10) << " | ";
-		std::cout << format_string(contacts[*index].get_nickname(), 10) << " |\n";
-		(*index)++;
+		std::cout << "Ain't nothing there yet" << std::endl;
+		return ;
 	}
+	std::cout << std::setw(10) << "Index" << "|" << std::setw(10) << "First Name" << "|" << std::setw(10) << "Last Name" << "|" << std::setw(10) << "Nickname" << std::endl;
+	while (++i < temp)
+		std::cout << std::setw(10) << i << "|" << std::setw(10) <<	format_string(contacts[i].get_firstname(), 10) << "|" << std::setw(10) << format_string(contacts[i].get_lastname(), 10) << "|" << std::setw(10) << format_string(contacts[i].get_nickname(), 10) << std::endl;
 }
 
-int	Phonebook::search_contact(int *overflow)
+int Phonebook::search_contact()
 {
 	int num;
-	if (overflow == 0)
-		return (0);
+	int i = get_ccount() - 1;
 	std::string uinput;
 	while (1)
 	{
-		std::cout << "Input Index: ";
+		std::cout << "Enter a valid index:  " << std::endl;
 		std::getline(std::cin, uinput);
-		if (std::cin.eof()) {return (42);}
-		if (uinput.compare("EXIT") == 0)
-			break ;
-		if (verification(uinput) != 0){
-			std::cout << "Enter something meaningful" << std::endl;
-			continue;
-		};
-		if (Phonebook::is_digit(uinput) == false)
-			break ;
-		std::istringstream iss(uinput);
-		iss >> num;
-		std::cout << *overflow << std::endl;
-		if ((num >= 0 && num <= 8) && (num < *overflow))
+		if (ver(uinput) > 0)
+			return (ver(uinput));
+		if (is_digit(uinput) == false || ver(uinput) == -1)
 		{
 			std::cout << std::endl;
-			std::cout << "First Name: " << contacts[num].get_firstname() << std::endl;
-			std::cout << std::endl;
-			std::cout << "Last Name: " << contacts[num].get_lastname() << std::endl;
-			std::cout << std::endl;
-			std::cout << "Nickname: " << contacts[num].get_nickname() << std::endl;
-			std::cout << std::endl;
-			std::cout << "Phone Number: " << contacts[num].get_phone_number() << std::endl;
-			std::cout << std::endl;
-			std::cout << "Darkest Secret: " << contacts[num].get_darkest_secret() << std::endl;
-			std::cout << std::endl;
-			break ;
+			continue;
 		}
-		else
+		std::istringstream iss(uinput);
+		iss >> num;
+		if (num > i || num < 0)
 		{
 			std::cout << "Enter a valid index" << std::endl;
 			continue ;
 		}
+		std::cout << std::endl;
+		std::cout << "First Name: " << contacts[num].get_firstname() << std::endl;
+		std::cout << std::endl;
+		std::cout << "Last Name: " << contacts[num].get_lastname() << std::endl;
+		std::cout << std::endl;
+		std::cout << "Nickname: " << contacts[num].get_nickname() << std::endl;
+		std::cout << std::endl;
+		std::cout << "Phone Number: " << contacts[num].get_phone_number() << std::endl;
+		std::cout << std::endl;
+		std::cout << "Darkest Secret: " << contacts[num].get_darkest_secret() << std::endl;
+		std::cout << std::endl;
+		break;
 	}
 	return (0);
-	//std::cout << "Put Something Meaningful: " << std::endl;
 }

@@ -29,20 +29,20 @@ int main(void)
 			std::cout << "Enter Something meaningful" << std::endl;
 		else
 		{
-			// std::cout << overflow << std::endl;
 			if (uinput.compare("ADD") == 0)
 			{
 				std::cout << std::endl;
-				negus.add_contact(&index);
-				// if (overflow == 42)
-				// 	break;
+				if (negus.add_contact(&index) == 42)
+						break ;
 			}
-			// if (uinput.compare("SEARCH") == 0)
-			// {
-			// 	negus.display(&index, overflow);
-			// 	if (negus.search_contact(&overflow) == 42)
-			// 		break ;
-			// }
+			if (uinput.compare("SEARCH") == 0)
+			{
+				std::cout << std::endl;
+				negus.display();
+				std::cout << std::endl;
+				if (negus.search_contact() == 42)
+					break ;
+			}
 			if (uinput.compare("EXIT") == 0)
 				break;
 		}

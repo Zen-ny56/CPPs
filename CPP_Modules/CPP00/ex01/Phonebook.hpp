@@ -31,12 +31,12 @@ class   Phonebook
         //Methods
         void    welcome();
         int    add_contact(int *index);
-        int    add_details(std::string uinput, int *index, int *d_index);
+        // int    add_details(std::string uinput, int *index, int *d_index);
         int    verification(std::string uinput);
-        void   display(int *index, int overflow);
-        int    search_contact(int *overflow);
+        void   display();
+        int    search_contact();
         bool   is_digit(const std::string& str);
-        int    ver(std::string uinput);
-        void   increment_ccount(int ccount);
+        int    ver(std::string& uinput);
+        void   increment_ccount(int *ccount);
         int    get_ccount();
 };
