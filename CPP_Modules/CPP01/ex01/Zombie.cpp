@@ -13,28 +13,64 @@
 #include "Zombie.hpp"
 
 /*Constrtuctors and deconstructor*/
-Zombie::Zombie(){std::cout << "Zombie default constructor has been called" << std::endl;}
-Zombie::Zombie(std::string name) : name(name){std::cout << name <<  ":Zombie has been created" << std::endl;}
+Zombie::Zombie()
+{
+	std::cout << "Zombie default constructor has been called" << std::endl;
+}
 
-Zombie::~Zombie(){std::cout << "Zombie has been destroyed" << std::endl;}
+Zombie::Zombie(std::string name) : name(name)
+{
+	std::cout << name <<  ": Zombie has been created" << std::endl;
+}
 
-void    Zombie::announce(){std::cout << name << ": BraiiiiiiinnnzzzZ..." << std::endl;}
+Zombie::~Zombie()
+{
+	std::cout << "Zombie has been destroyed" << std::endl;
+}
+
+void    Zombie::announce()
+{
+	std::cout << name << ": BraiiiiiiinnnzzzZ..." << std::endl;
+}
 
 void    Zombie::set_name(std::string name){this->name = name;}
 
+// Zombie* zombieHorde(int N, std::string name)
+// {
+//     if (N <= 0)
+//     {
+//         std::cerr << "Put something meaningful" << std::endl;
+//         return (NULL);
+//     }
+//     Zombie *horde = new Zombie[N];
+//     int i = 0;
+//     while (i < N)
+//     {
+//         horde[i].set_name(name);
+//         i++;
+//     }
+//     return (horde);
+// }
+
 Zombie* zombieHorde(int N, std::string name)
 {
-    if (N <= 0)
-    {
-        std::cerr << "Put something meaningful" << std::endl;
-        return (NULL);
-    }
-    Zombie *horde = new Zombie[N];
-    int i = 0;
-    while (i < N)
-    {
-        horde[i].set_name(name);
-        i++;
-    }
-    return (horde);
+	if (N <= 0)
+	{
+		std::cerr << "Invalid number of zombies: " << N << std::endl;
+		return (NULL);
+	}
+	try
+	{
+		Zombie* horde = new Zombie[N];
+		for (int i = 0; i < N; ++i)
+		{
+			horde[i].set_name(name);
+		}
+		return (horde);	
+	}
+	catch (const std::bad_alloc& e)
+	{
+		std::cerr << "Memory allocation failed: " << e.what() << std::endl;
+		return (NULL);
+	}
 }

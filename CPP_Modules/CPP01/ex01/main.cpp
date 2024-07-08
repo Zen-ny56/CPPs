@@ -14,14 +14,13 @@
 
 int main()
 {
-    int n = 9;
-    Zombie* horde = zombieHorde(n, "Goons");
-    int i = 0;
-    while (i < n)
-    {
-        horde[i].announce();
-        i++;
+    int n = 1000;
+    Zombie* horde = zombieHorde(n, "LargeHorde");
+    if (horde)
+	{
+		for (int i = 0; i < n; ++i)
+            horde[i].announce();
+        delete[] horde;
     }
-    delete[] horde;
     return (0);
 }
