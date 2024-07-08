@@ -60,33 +60,40 @@ ClapTrap::~ClapTrap()
 	return ;
 }
 
-void	ClapTrap::reduce(){this->hit_points -= 1;}
+//Helping functions
+void	ClapTrap::reduce_health(){this->hit_points -= 1;}
 
-void	ClapTrap::set_energypoints(){this->energy_points -= 1;}
+void	ClapTrap::reduce_energy(){this->energy_points -= 1;}
 
-void	ClapTrap::increase(){this->hit_points += 1;}
+void	ClapTrap::increase_health(){this->hit_points += 1;}
 
 void ClapTrap::attack(const std::string &target)
 {
-	// std::cout << hit_points << std::endl;
-	// std::cout << energy_points << std::endl;
-	// std::cout << attack_damage << std::endl;
-	if (energy_points > 0)
+    if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << name << " attacks " << target << " losing 1 energy point" << std::endl;
-		set_energypoints();
-		std::cout << this->get_energypoints() << std::endl;
-	}
+		std::cout << "ClapTrap " << name << " has no energy to attack!" << std::endl;
+		return;
+    }
+    if (hit_points == 0)
+	{
+		std::cout << "ClapTrap " << name << " is out of hit points and cannot attack!" << std::endl;
+		return;
+    }
+	std::cout << "ClapTrap " << name << " attacks " << target << ", causing " << attack_damage << " points of damage!" << std::endl;
+    reduce_energy();
+    std::cout << name << " now has " << energy_points << " energy points left." << std::endl;
 }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	if (hit_points > 0 && (hit_points >= amount))
+	if (hit_points == 0)
+		std::cout << "ClapTrap " << name << " has not hitpoints left" << std::endl;
+	if (hit_points >= amount)
 	{
 		std::cout << "ClapTrap " << name << " has taken this damage from it's opponent: " << amount << std::endl;
 		while (amount > 0)
 		{
-			reduce();
+			reduce_health();
 			amount--;
 		}
 		std::cout << "ClapTrap " << name << " has " << hit_points << " left" << std::endl;
@@ -95,10 +102,21 @@ void ClapTrap::takeDamage(unsigned int amount)
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
+	if (energy_points == 0)
+	{
+		std::cout << "ClapTrap " << name << " has no energy to repair!" << std::endl;
+		return;
+    }
+	if (hit_points == 0)
+	{
+		std::cout << "ClapTrap " << name << " is out of hit points and cannot be repaired!" << std::endl;
+		return;
+	}
 	while (amount > 0)
 	{
-		increase();
+		increase_health();
+		reduce_energy();
 		amount--;
 	}
-	std::cout << "ClapTrap " << name << " has been repaired , it's new health is: " << hit_points << std::endl;
-} 
+	std::cout << "ClapTrap " << name << " is repaired by " << amount << " points, now has " << hit_points << " hit points and " << energy_points << " energy points left." << std::endl;
+}
