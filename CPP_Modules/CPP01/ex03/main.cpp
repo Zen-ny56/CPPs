@@ -16,7 +16,10 @@
 
 int main()
 {
+    Weapon ak("AK-47");
+    HumanA zeni("Zeni", ak);
+    zeni.attack();
     HumanB jim("Jim");
     jim.attack();  // Jim has no weapon
-    return 0;
+    return (0);
 }

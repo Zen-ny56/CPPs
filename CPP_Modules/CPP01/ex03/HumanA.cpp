@@ -12,7 +12,15 @@
 
 #include "HumanA.hpp"
 
-HumanA::HumanA(std::string name, Weapon &weapon):name(name), weapon(weapon){}
+HumanA::HumanA(std::string name, Weapon &weapon):name(name), weapon(weapon)
+{
+	std::cout << "HumanA constructor has been called" << std::endl;
+}
+
+HumanA::~HumanA()
+{
+	std::cout << "HumanA deconstructor has been called" << std::endl;
+}
 
 void	HumanA::attack()
 {

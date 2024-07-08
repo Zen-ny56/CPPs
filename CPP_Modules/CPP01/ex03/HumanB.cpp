@@ -12,7 +12,15 @@
 
 #include "HumanB.hpp"
 
-HumanB::HumanB(std::string name) : name(name){}
+HumanB::HumanB(std::string name) : name(name)
+{
+	std::cout << "HumanB constructor has been called" << std::endl;
+}
+
+HumanB::~HumanB()
+{
+	std::cout << "HumanB deconstructor has been called" << std::endl;
+}
 
 void    HumanB::set_Weapon(Weapon &weapon)
 {
