@@ -12,8 +12,15 @@
 
 #include "Harl.hpp"
 
-Harl::Harl(){};
-Harl::~Harl(){};
+Harl::Harl()
+{
+	std::cout << "Harl default constructor has been called" << std::endl;
+};
+
+Harl::~Harl()
+{
+	std::cout << "Harl deconstructor has been called" << std::endl;	
+};
 
 void    Harl::debug()
 {
