@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 void replaceAndWrite(std::ifstream &infile, std::ofstream &outfile, const std::string &s1, const std::string &s2)
 {
@@ -32,22 +33,42 @@ void replaceAndWrite(std::ifstream &infile, std::ofstream &outfile, const std::s
 
 int main(int ac, char **av)
 {
-	/*Compilation errors*/
+    // Compilation errors
 	if (ac != 4)
 	{
 		std::cerr << "3 parameters allowed" << std::endl;
-	}
+		return (1);
+    }
 	std::string filename = av[1];
 	std::string s1 = av[2];
-	std::string s2 = av[3];
-	
-	if (s1.empty()){std::cerr << "Put something meaningful" << std::endl;}
-	//Reading from file
-	std::ifstream infile(filename);
-	if (!infile.is_open()){std::cerr << "Could not open the file" << std::endl;}
-	//Creating new file
-	std::ofstream outfile(filename + ".replace");
-	if (!outfile.is_open()){std::cerr << "Could not create the file" << std::endl;}
-	//Replace
-	replaceAndWrite(infile, outfile, s1, s2);
+    std::string s2 = av[3];
+    
+    if (s1.empty())
+	{
+		std::cerr << "Put something meaningful" << std::endl;
+		return 1;
+    }
+    // Reading from file
+    std::ifstream infile(filename.c_str());
+    if (!infile.is_open())
+	{
+		std::cerr << "Could not open the file" << std::endl;
+		return 1;
+    }
+    // Creating new file
+    std::ofstream outfile((filename + ".replace").c_str());
+    if (!outfile.is_open())
+	{
+		std::cerr << "Could not create the file" << std::endl;
+		return 1;
+    }    
+    // Replace
+    replaceAndWrite(infile, outfile, s1, s2);
+    //Close file
+    infile.close();
+    outfile.close();
+
+    return 0;
 }
+
+//Handle permissions
