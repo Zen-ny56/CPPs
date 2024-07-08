@@ -13,7 +13,15 @@
 #include "Zombie.hpp"
 
 Zombie::Zombie(std::string name) : name(name)
+{
+    std::cout << name <<  ":Zombie has been created" << std::endl;
+}
 
-{std::cout << name <<  ":Zombie has been created" << std::endl;}
-Zombie::~Zombie(){std::cout << "Zombie has been destroyed" << std::endl;}
-void    Zombie::announce(){std::cout << name << ": BraiiiiiiinnnzzzZ..." << std::endl;}
+Zombie::~Zombie()
+{
+    std::cout << "Zombie has been destroyed" << std::endl;
+}
+void    Zombie::announce()
+{
+    std::cout << name << ": BraiiiiiiinnnzzzZ..." << std::endl;
+}
