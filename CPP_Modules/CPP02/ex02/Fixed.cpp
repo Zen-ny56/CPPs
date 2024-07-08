@@ -108,28 +108,28 @@ bool Fixed::operator!=(const Fixed &other)const
 Fixed Fixed::operator+(const Fixed &other) const
 {
 	Fixed result;
-	result = this->fixed_point + other.fixed_point;
+	result.fixed_point = this->fixed_point + other.fixed_point;
 	return (result);
 }
 
 Fixed Fixed::operator-(const Fixed &other) const
 {
 	Fixed result;
-	result = this->fixed_point - other.fixed_point;
+	result.fixed_point = this->fixed_point - other.fixed_point;
 	return (result);
 }
 
 Fixed Fixed::operator*(const Fixed &other) const
 {
 	Fixed result;
-	result = this->fixed_point * other.fixed_point;
+    result.fixed_point = (this->fixed_point * other.fixed_point) >> fractional;
 	return (result);
 }
 
 Fixed Fixed::operator/(const Fixed &other) const
 {
 	Fixed result;
-	result = this->fixed_point / other.fixed_point;
+    result.fixed_point = (this->fixed_point << fractional) / other.fixed_point;
 	return (result);
 }
 
@@ -193,6 +193,6 @@ const Fixed& Fixed::min(const Fixed& a, const Fixed& b)
 
 std::ostream& operator<<(std::ostream& os, const Fixed& fixed)
 {
-	os << fixed.toInt();
+	os << fixed.toFloat();
 	return (os);
 }
