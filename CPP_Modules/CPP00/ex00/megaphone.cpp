@@ -28,8 +28,12 @@ int main(int ac, char **av)
 			{
 				if (!(char)std::isalpha(av[i][j]))
 					std::cout << (char)std::toupper(av[i][j]);
+				else
+					std::cout << av[i][j];
 				j++;
 			}
+			if (i < (ac - 1))
+				std::cout << ' ';
 			i++;
 		}
 	}
