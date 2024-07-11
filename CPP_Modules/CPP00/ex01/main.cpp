@@ -13,13 +13,23 @@
 #include "Contact.hpp"
 #include "Phonebook.hpp"
 
+volatile sig_atomic_t g_exit_flag = 0;
+
+void signalHandler(int signum)
+{
+    std::cout << "\nInterrupt signal (" << signum << ") received. Preparing to exit...\n";
+    g_exit_flag = 1;
+	exit(EXIT_SUCCESS);
+}
+
 int main(void)
 {
 	Phonebook negus;
 	int     index = 0;
 	std::string uinput;
 	negus.welcome();
-	while (1)
+	std::signal(SIGINT, signalHandler);
+	while (!g_exit_flag)
 	{
 		std::cout << "Enter Something: ";
 		std::getline(std::cin, uinput);

@@ -15,8 +15,12 @@
 #include "Contact.hpp"
 #include <string>
 #include <iomanip>
+#include <csignal>
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
+
+extern volatile sig_atomic_t g_exit_flag;
 
 class   Phonebook
 {

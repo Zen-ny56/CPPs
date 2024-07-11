@@ -195,6 +195,8 @@ int Phonebook::search_contact()
 	int num;
 	int i = get_ccount() - 1;
 	std::string uinput;
+	if (get_ccount() == 0)
+		return (0);
 	while (1)
 	{
 		std::cout << "Enter a valid index:  " << std::endl;
@@ -203,16 +205,13 @@ int Phonebook::search_contact()
 			return (ver(uinput));
 		if (is_digit(uinput) == false || ver(uinput) == -1)
 		{
-			std::cout << std::endl;
+			// std::cout << std::endl;
 			continue;
 		}
 		std::istringstream iss(uinput);
 		iss >> num;
 		if (num > i || num < 0)
-		{
-			std::cout << "Enter a valid index" << std::endl;
 			continue ;
-		}
 		std::cout << std::endl;
 		std::cout << "First Name: " << contacts[num].get_firstname() << std::endl;
 		std::cout << std::endl;
