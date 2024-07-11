@@ -12,7 +12,7 @@
 
 #include "HumanB.hpp"
 
-HumanB::HumanB(std::string name) : name(name)
+HumanB::HumanB(std::string name) : name(name), weapon(NULL)
 {
 	std::cout << "HumanB constructor has been called" << std::endl;
 }
@@ -30,9 +30,7 @@ void    HumanB::set_Weapon(Weapon &weapon)
 void    HumanB::attack()
 {
 	if (weapon)
-	{
 		std::cout << name << " attacks with their " << weapon->getType() << std::endl;
-	}
 	else
 		std::cout << name << " does not have a weapon yet" << std::endl;
 }
