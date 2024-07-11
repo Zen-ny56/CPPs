@@ -60,6 +60,7 @@ int main(int ac, char **av)
     if (!outfile.is_open())
 	{
 		std::cerr << "Could not create the file" << std::endl;
+		infile.close();
 		return 1;
     }    
     // Replace
