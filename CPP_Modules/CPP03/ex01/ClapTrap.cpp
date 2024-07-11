@@ -87,7 +87,7 @@ void ClapTrap::takeDamage(unsigned int amount)
 {
 	if (hit_points == 0)
 		std::cout << "ClapTrap " << name << " has not hitpoints left" << std::endl;
-	if (hit_points >= amount)
+	if (hit_points > amount)
 	{
 		std::cout << "ClapTrap " << name << " has taken this damage from it's opponent: " << amount << std::endl;
 		while (amount > 0)

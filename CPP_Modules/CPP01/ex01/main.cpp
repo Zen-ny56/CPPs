@@ -14,7 +14,7 @@
 
 int main()
 {
-    int n = 1000;
+    int n = -3;
     Zombie* horde = zombieHorde(n, "LargeHorde");
     if (horde)
 	{
