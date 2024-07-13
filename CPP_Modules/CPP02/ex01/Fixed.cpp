@@ -16,12 +16,14 @@ Fixed::~Fixed()
 
 Fixed::Fixed(const int num) : fixed_point(num << fractional)
 {
+	std::cout << fixed_point << std::endl;
 	std::cout << "Int constructor called" << std::endl;
 	return ;
 }
 
 Fixed::Fixed(const float f) : fixed_point(roundf(f * (1 << fractional)))
 {
+	std::cout << fixed_point << std::endl;
 	std::cout << "Float constructor called" << std::endl;
 	return ;
 };
@@ -43,7 +45,7 @@ Fixed& Fixed::operator=(const Fixed& copy)
 
 float    Fixed::toFloat(void) const
 {
-	return  (static_cast<float>(fixed_point) / (1 << fractional));
+	return  (static_cast<float>(fixed_point) / (1 << fractional	));
 }
 
 int    Fixed::toInt(void) const
