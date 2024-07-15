@@ -1,6 +1,7 @@
 #include "Fixed.hpp"
 
-int main() {
+int main()
+{
     Fixed a(3.5f);
     Fixed b(2.5f);
 

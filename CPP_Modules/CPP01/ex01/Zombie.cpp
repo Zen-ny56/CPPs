@@ -35,22 +35,6 @@ void    Zombie::announce()
 
 void    Zombie::set_name(std::string name){this->name = name;}
 
-// Zombie* zombieHorde(int N, std::string name)
-// {
-//     if (N <= 0)
-//     {
-//         std::cerr << "Put something meaningful" << std::endl;
-//         return (NULL);
-//     }
-//     Zombie *horde = new Zombie[N];
-//     int i = 0;
-//     while (i < N)
-//     {
-//         horde[i].set_name(name);
-//         i++;
-//     }
-//     return (horde);
-// }
 
 Zombie* zombieHorde(int N, std::string name)
 {

@@ -20,7 +20,7 @@ int main()
     HumanA zeni("Zeni", ak);
     zeni.attack();
     HumanB jim("Jim");
-    //jim.set_Weapon(ak);
+    HumanB jim();
     jim.attack();  // Jim has no weapon
     return (0);
 }
