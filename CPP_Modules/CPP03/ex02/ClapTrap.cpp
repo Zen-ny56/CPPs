@@ -84,6 +84,8 @@ void ClapTrap::beRepaired(unsigned int amount)
 	unsigned int i = 0;
 	while (amount > 0 && this->get_energypoints() > 0 && (i < this->get_max()))
 	{
+		if (this->get_hitpoints() == this->get_max())
+			break ;
 		increase_health();
 		reduce_energy();
 		amount--;
@@ -100,6 +102,8 @@ std::string ClapTrap::get_name() const
 
 unsigned int ClapTrap::get_hitpoints() const
 {
+	if (this->hit_points > this->max)
+		return (this->max);
 	return (this->hit_points);
 }
 
