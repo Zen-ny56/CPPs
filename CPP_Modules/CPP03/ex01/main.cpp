@@ -4,12 +4,12 @@
 int main()
 {
     std::string forty = "enemy";
-    ClapTrap claptrap("CL4P-TP");
+    ClapTrap claptrap("Player 1");
     claptrap.attack(forty);
     claptrap.takeDamage(5);
     claptrap.beRepaired(3);
 
-    ScavTrap scavtrap("SC4V-TP");
+    ScavTrap scavtrap("Player 2");
     scavtrap.attack(forty);
     scavtrap.takeDamage(20);
     scavtrap.beRepaired(10);

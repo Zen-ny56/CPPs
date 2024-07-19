@@ -42,15 +42,15 @@ void ClapTrap::attack(std::string &target)
 {
     if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " has no energy to attack!" << std::endl;
+		std::cout << get_name() << " has no energy to attack!" << std::endl;
 		return;
     }
     if (hit_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " is out of hit points and cannot attack!" << std::endl;
+		std::cout << get_name() << " is out of hit points and cannot attack!" << std::endl;
 		return;
     }
-	std::cout << "ClapTrap " << get_name() << " attacks " << target << ", causing " << 1 << " points of damage!" << std::endl;
+	std::cout << get_name() << " attacks " << target << ", causing " << 1 << " points of damage!" << std::endl;
     reduce_energy();
     std::cout << get_name() << " now has " << get_energypoints() << " energy points left." << std::endl;
 }
@@ -58,17 +58,17 @@ void ClapTrap::attack(std::string &target)
 void ClapTrap::takeDamage(unsigned int amount)
 {
 	if (hit_points == 0)
-		std::cout << "ClapTrap " << get_name() << " has not hitpoints left" << std::endl;
+		std::cout  << get_name() << " has not hitpoints left" << std::endl;
 	if (hit_points >= amount)
 	{
 		set_attackdamage(amount);
-		std::cout << "ClapTrap " << get_name() << " has taken this damage from it's opponent: " << get_attackdamage() << std::endl;
+		std::cout << get_name() << " has taken this damage from it's opponent: " << get_attackdamage() << std::endl;
 		while (amount > 0)
 		{
 			reduce_health();
 			amount--;
 		}
-		std::cout << "ClapTrap " << get_name() << " has " << get_hitpoints() << " hit_points left" << std::endl;
+		std::cout <<  get_name() << " has " << get_hitpoints() << " hit_points left" << std::endl;
 	}
 }
 
@@ -76,12 +76,12 @@ void ClapTrap::beRepaired(unsigned int amount)
 {
 	if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " has no energy to repair!" << std::endl;
+		std::cout  << get_name() << " has no energy to repair!" << std::endl;
 		return;
     }
 	if (hit_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " is out of hit points and cannot be repaired!" << std::endl;
+		std::cout  << get_name() << " is out of hit points and cannot be repaired!" << std::endl;
 		return;
 	}
 	int temp = amount;
@@ -91,7 +91,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 		reduce_energy();
 		amount--;
 	}
-	std::cout << "ClapTrap " << get_name() << " is repaired by " << temp << " points, now has " << get_hitpoints() << " hit points and " << get_energypoints() << " energy points left." << std::endl;
+	std::cout <<  get_name() << " is repaired by " << temp << " points, now has " << get_hitpoints() << " hit points and " << get_energypoints() << " energy points left." << std::endl;
 }
 
 //Getter functions
