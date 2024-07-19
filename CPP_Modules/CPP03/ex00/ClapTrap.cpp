@@ -19,7 +19,6 @@ ClapTrap::ClapTrap(const ClapTrap& copy) :name(copy.name), hit_points(copy.hit_p
 	*this = copy;
 }
 
-
 //Assignment operator
 ClapTrap& ClapTrap::operator=(const ClapTrap &copy)
 {
@@ -45,15 +44,15 @@ void ClapTrap::attack(const std::string &target)
 {
     if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " has no energy to attack!" << std::endl;
+		std::cout << get_name() << " has no energy to attack!" << std::endl;
 		return;
     }
     if (hit_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " is out of hit points and cannot attack!" << std::endl;
+		std::cout << get_name() << " is out of hit points and cannot attack!" << std::endl;
 		return;
     }
-	std::cout << "ClapTrap " << get_name() << " attacks " << target << ", causing " << 1 << " points of damage!" << std::endl;
+	std::cout << get_name() << " attacks " << target << ", causing " << 1 << " points of damage!" << std::endl;
     reduce_energy();
     std::cout << get_name() << " now has " << get_energypoints() << " energy points left." << std::endl;
 }
@@ -61,17 +60,17 @@ void ClapTrap::attack(const std::string &target)
 void ClapTrap::takeDamage(unsigned int amount)
 {
 	if (hit_points == 0)
-		std::cout << "ClapTrap " << get_name() << " has not hitpoints left" << std::endl;
-	if (hit_points >= amount)
+		std::cout << get_name() << " has not hitpoints left" << std::endl;
+	if (amount > 0)
 	{
 		set_attackdamage(amount);
-		std::cout << "ClapTrap " << get_name() << " has taken this damage from it's opponent: " << get_attackdamage() << std::endl;
-		while (amount > 0)
+		std::cout << get_name() << " has taken this damage from it's opponent: " << get_attackdamage() << std::endl;
+		while (amount > 0 && get_hitpoints() > 0)
 		{
 			reduce_health();
 			amount--;
 		}
-		std::cout << "ClapTrap " << get_name() << " has " << get_hitpoints() << " hit_points left" << std::endl;
+		std::cout << get_name() << " has " << get_hitpoints() << " hit_points left" << std::endl;
 	}
 }
 
@@ -79,14 +78,9 @@ void ClapTrap::beRepaired(unsigned int amount)
 {
 	if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << get_name() << " has no energy to repair!" << std::endl;
+		std::cout << get_name() << " has no energy to repair!" << std::endl;
 		return;
     }
-	if (hit_points == 0)
-	{
-		std::cout << "ClapTrap " << get_name() << " is out of hit points and cannot be repaired!" << std::endl;
-		return;
-	}
 	int temp = amount;
 	while (amount > 0)
 	{
@@ -94,7 +88,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 		reduce_energy();
 		amount--;
 	}
-	std::cout << "ClapTrap " << get_name() << " is repaired by " << temp << " points, now has " << get_hitpoints() << " hit points and " << get_energypoints() << " energy points left." << std::endl;
+	std::cout << get_name() << " is repaired by " << temp << " points, now has " << get_hitpoints() << " hit points and " << get_energypoints() << " energy points left." << std::endl;
 }
 
 //Getter functions

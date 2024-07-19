@@ -1,17 +1,17 @@
 #include "ClapTrap.hpp"
 
-int main(void)
+int main()
 {
-	ClapTrap claptrap1("CT-01");
+    ClapTrap clap1("Clap1");
 
-	claptrap1.attack("target1");
-	claptrap1.takeDamage(5);
-	claptrap1.beRepaired(3);
+    // Hit points cannot go below 0
+    clap1.takeDamage(20); // Should show hit points as 0
 
-	ClapTrap claptrap2("CT-02");
-	claptrap2.attack("target2");
-	claptrap2.takeDamage(8);
-	claptrap2.beRepaired(2);
+    // Repair should still work correctly when at 0 hit points
+    clap1.beRepaired(10); // Should increase hit points to 10
 
-	return (0);
+    // Hit points should not be negative
+    clap1.takeDamage(15); // Should show hit points as 0
+
+    return 0;
 }
