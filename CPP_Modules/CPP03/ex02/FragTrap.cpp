@@ -2,25 +2,25 @@
 
 FragTrap::FragTrap(): ClapTrap("Default")
 {
-    hit_points = 100;
-    energy_points = 100;
-    attack_damage = 30;
+    this->hit_points = 100;
+    this->energy_points = 100;
+    this->attack_damage = 30;
     std::cout << "FragTrap default constructor has been called" << std::endl;
 }
 
 FragTrap::FragTrap(std::string name) :ClapTrap(name)
 {
-    hit_points = 100;
-    energy_points = 100;
-    attack_damage = 30;
+    this->hit_points = 100;
+    this->energy_points = 100;
+    this->attack_damage = 30;
     std::cout << "FragTrap parameterized constructor has been called" << std::endl;
 }
 
 FragTrap::FragTrap(const FragTrap& copy) : ClapTrap(copy)
 {
-    hit_points = 100;
-    energy_points = 100;
-    attack_damage = 30;
+    this->hit_points = 100;
+    this->energy_points = 100;
+    this->attack_damage = 30;
     std::cout << "FragTrap copy constructor has been called" << std::endl;
 }
 

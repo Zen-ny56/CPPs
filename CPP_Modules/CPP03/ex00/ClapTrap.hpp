@@ -9,6 +9,7 @@ class ClapTrap
 		unsigned int hit_points;//Health
 		unsigned int energy_points;//Stamina
 		unsigned int attack_damage;//Damage taken
+		unsigned int max;//Safety for heath bar 
 	public:
 		ClapTrap();
 		ClapTrap(const std::string name);
@@ -22,6 +23,7 @@ class ClapTrap
 		unsigned int get_hitpoints() const;
 		unsigned int get_energypoints() const;
 		unsigned int get_attackdamage() const;
+		unsigned int get_max() const;
 		void	reduce_health();
 		void	increase_health();
 		void	reduce_energy();
