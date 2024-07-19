@@ -13,7 +13,6 @@ int main()
 
     // Hit points should not be negative
     clap1.takeDamage(3); // Should show hit points as 0
- 	clap1.beRepaired(1);
 
     return 0;
 }

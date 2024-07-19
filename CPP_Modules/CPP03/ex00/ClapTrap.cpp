@@ -87,10 +87,10 @@ void ClapTrap::beRepaired(unsigned int amount)
 		if (this->get_hitpoints() == this->get_max())
 			break;
 		increase_health();
-		reduce_energy();
 		amount--;
 		i++;
 	}
+	reduce_energy();
 	std::cout << get_name() << " is repaired by " << temp << " points, now has " << get_hitpoints() << " hit points and " << get_energypoints() << " energy points left." << std::endl;
 }
 
