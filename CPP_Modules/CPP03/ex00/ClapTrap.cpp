@@ -19,26 +19,6 @@ ClapTrap::ClapTrap(const ClapTrap& copy) :name(copy.name), hit_points(copy.hit_p
 	*this = copy;
 }
 
-//Getter functions
-std::string ClapTrap::get_name() const
-{
-	return (this->name);
-}
-
-unsigned int ClapTrap::get_hitpoints() const
-{
-	return (this->hit_points);
-}
-
-unsigned int ClapTrap::get_energypoints() const
-{
-	return (this->energy_points);
-}
-
-unsigned int ClapTrap::get_attackdamage() const
-{
-	return (this->attack_damage);
-}
 
 //Assignment operator
 ClapTrap& ClapTrap::operator=(const ClapTrap &copy)
@@ -60,43 +40,38 @@ ClapTrap::~ClapTrap()
 	return ;
 }
 
-//Helping functions
-void	ClapTrap::reduce_health(){this->hit_points -= 1;}
-
-void	ClapTrap::reduce_energy(){this->energy_points -= 1;}
-
-void	ClapTrap::increase_health(){this->hit_points += 1;}
 
 void ClapTrap::attack(const std::string &target)
 {
     if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << name << " has no energy to attack!" << std::endl;
+		std::cout << "ClapTrap " << get_name() << " has no energy to attack!" << std::endl;
 		return;
     }
     if (hit_points == 0)
 	{
-		std::cout << "ClapTrap " << name << " is out of hit points and cannot attack!" << std::endl;
+		std::cout << "ClapTrap " << get_name() << " is out of hit points and cannot attack!" << std::endl;
 		return;
     }
-	std::cout << "ClapTrap " << name << " attacks " << target << ", causing " << attack_damage << " points of damage!" << std::endl;
+	std::cout << "ClapTrap " << get_name() << " attacks " << target << ", causing " << 1 << " points of damage!" << std::endl;
     reduce_energy();
-    std::cout << name << " now has " << energy_points << " energy points left." << std::endl;
+    std::cout << get_name() << " now has " << get_energypoints() << " energy points left." << std::endl;
 }
-
+   
 void ClapTrap::takeDamage(unsigned int amount)
 {
 	if (hit_points == 0)
-		std::cout << "ClapTrap " << name << " has not hitpoints left" << std::endl;
+		std::cout << "ClapTrap " << get_name() << " has not hitpoints left" << std::endl;
 	if (hit_points >= amount)
 	{
-		std::cout << "ClapTrap " << name << " has taken this damage from it's opponent: " << amount << std::endl;
+		set_attackdamage(amount);
+		std::cout << "ClapTrap " << get_name() << " has taken this damage from it's opponent: " << get_attackdamage() << std::endl;
 		while (amount > 0)
 		{
 			reduce_health();
 			amount--;
 		}
-		std::cout << "ClapTrap " << name << " has " << hit_points << " left" << std::endl;
+		std::cout << "ClapTrap " << get_name() << " has " << get_hitpoints() << " hit_points left" << std::endl;
 	}
 }
 
@@ -104,19 +79,50 @@ void ClapTrap::beRepaired(unsigned int amount)
 {
 	if (energy_points == 0)
 	{
-		std::cout << "ClapTrap " << name << " has no energy to repair!" << std::endl;
+		std::cout << "ClapTrap " << get_name() << " has no energy to repair!" << std::endl;
 		return;
     }
 	if (hit_points == 0)
 	{
-		std::cout << "ClapTrap " << name << " is out of hit points and cannot be repaired!" << std::endl;
+		std::cout << "ClapTrap " << get_name() << " is out of hit points and cannot be repaired!" << std::endl;
 		return;
 	}
+	int temp = amount;
 	while (amount > 0)
 	{
 		increase_health();
 		reduce_energy();
 		amount--;
 	}
-	std::cout << "ClapTrap " << name << " is repaired by " << amount << " points, now has " << hit_points << " hit points and " << energy_points << " energy points left." << std::endl;
+	std::cout << "ClapTrap " << get_name() << " is repaired by " << temp << " points, now has " << get_hitpoints() << " hit points and " << get_energypoints() << " energy points left." << std::endl;
 }
+
+//Getter functions
+std::string ClapTrap::get_name() const
+{
+	return (this->name);
+}
+
+unsigned int ClapTrap::get_hitpoints() const
+{
+	return (this->hit_points);
+}
+
+unsigned int ClapTrap::get_energypoints() const
+{
+	return (this->energy_points);
+}
+
+unsigned int ClapTrap::get_attackdamage() const
+{
+	return (this->attack_damage);
+}
+
+//Helping functions & setters
+void	ClapTrap::reduce_health(){this->hit_points -= 1;}
+
+void	ClapTrap::reduce_energy(){this->energy_points -= 1;}
+
+void	ClapTrap::increase_health(){this->hit_points += 1;}
+
+void	ClapTrap::set_attackdamage(unsigned int amount){this->attack_damage = amount;}
