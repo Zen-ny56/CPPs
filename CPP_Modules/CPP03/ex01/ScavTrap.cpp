@@ -2,25 +2,25 @@
 
 ScavTrap::ScavTrap() : ClapTrap("Default")
 {
-	hit_points = 100;
-	energy_points = 50;
-	attack_damage = 20;
-	std::cout << "ScavTrap default onstructor called" << std::endl;
+	this->hit_points = 100;
+	this->energy_points = 50;
+	this->attack_damage = 20;
+	std::cout << "ScavTrap default  constructor called" << std::endl;
 }
 
 ScavTrap::ScavTrap(std::string name) :ClapTrap(name)
 {
-	hit_points = 100;
-	energy_points = 50;
-	attack_damage = 20;
+	this->hit_points = 100;
+	this->energy_points = 50;
+	this->attack_damage = 20;
 	std::cout << "ScavTrap parameter constructor has been called" << std::endl;
 }
 
 ScavTrap::ScavTrap(const ScavTrap& copy) : ClapTrap(copy)
 {
-	hit_points = 100;
-	energy_points = 50;
-	attack_damage = 20;
+	this->hit_points = 100;
+	this->energy_points = 50;
+	this->attack_damage = 20;
 	std::cout << "ScavTrap copy constructor has been called" << std::endl;
 }
 
