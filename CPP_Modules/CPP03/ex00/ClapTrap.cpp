@@ -39,7 +39,6 @@ ClapTrap::~ClapTrap()
 	return ;
 }
 
-
 void ClapTrap::attack(const std::string &target)
 {
     if (energy_points == 0)
