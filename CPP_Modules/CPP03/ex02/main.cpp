@@ -6,34 +6,25 @@ int main()
 {
     std::string target = "enemy";
 
-    // Mixed operations for ClapTrap
+    // Test ClapTrap
     ClapTrap claptrap("CL4P-TP");
-    claptrap.attack(target);
-    claptrap.takeDamage(5);
-    claptrap.beRepaired(4);
-    claptrap.attack(target);
-    claptrap.takeDamage(10);
-    claptrap.beRepaired(5);
+    claptrap.attack(target);    // Should display attack message
+    claptrap.takeDamage(5);     // Should reduce hit points by 5
+    claptrap.beRepaired(3);     // Should increase hit points by 3
 
-    // Mixed operations for ScavTrap
-    // ScavTrap scavtrap("SC4V-TP");
-    // scavtrap.attack(target);
-    // scavtrap.takeDamage(10);
-    // scavtrap.beRepaired(5);
-    // scavtrap.attack(target);
-    // scavtrap.takeDamage(15);
-    // scavtrap.beRepaired(10);
-    // scavtrap.guardGate();
+    // Test ScavTrap
+    ScavTrap scavtrap("SC4V-TP");
+    scavtrap.attack(target);    // Should display attack message
+    scavtrap.takeDamage(20);    // Should reduce hit points by 20
+    scavtrap.beRepaired(10);    // Should increase hit points by 10
+    scavtrap.guardGate();       // Should activate Gatekeeper mode
 
-    // // Mixed operations for FragTrap
-    // FragTrap fragtrap("BB-TP");
-    // fragtrap.attack(target);
-    // fragtrap.takeDamage(10);
-    // fragtrap.beRepaired(5);
-    // fragtrap.attack(target);
-    // fragtrap.takeDamage(20);
-    // fragtrap.beRepaired(15);
-    // fragtrap.highFiveGuys();
+    // Test FragTrap
+    FragTrap fragtrap("BB-TP");
+    fragtrap.attack(target);    // Should display attack message
+    fragtrap.takeDamage(20);    // Should reduce hit points by 20
+    fragtrap.beRepaired(10);    // Should increase hit points by 10
+    fragtrap.highFiveGuys();    // Should ask for high five
 
-    // return 0;
+    return 0;
 }
