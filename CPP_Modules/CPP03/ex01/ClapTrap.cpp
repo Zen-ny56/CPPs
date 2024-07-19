@@ -7,13 +7,13 @@ ClapTrap::ClapTrap()
 	return ;
 }
 
-ClapTrap::ClapTrap(std::string name) :name(name), hit_points(10), energy_points(10), attack_damage(0)
+ClapTrap::ClapTrap(std::string name) :name(name), hit_points(10), energy_points(10), attack_damage(0), max(hit_points)
 {
 	std::cout << "Constructor has been called" << std::endl;
 	return ;
 }
 
-ClapTrap::ClapTrap(const ClapTrap& copy) :name(copy.name), hit_points(copy.hit_points), energy_points(copy.energy_points), attack_damage(copy.attack_damage)
+ClapTrap::ClapTrap(const ClapTrap& copy) :name(copy.name), hit_points(copy.hit_points), energy_points(copy.energy_points), attack_damage(copy.attack_damage), max(copy.hit_points)
 {
 	std::cout << "Copy Constructor has been called" << std::endl;
 	*this = copy;
@@ -27,6 +27,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap &copy)
 		this->hit_points = copy.get_hitpoints();
 		this->energy_points = copy.get_energypoints();
 		this->attack_damage = copy.get_attackdamage();
+		this->max = this->hit_points;
 	}
 	std::cout << "Copy assignment operator has been called" << std::endl;
 	return (*this);
@@ -80,11 +81,13 @@ void ClapTrap::beRepaired(unsigned int amount)
 		return;
     }
 	int temp = amount;
-	while (amount > 0)
+	unsigned int i = 0;
+	while (amount > 0 && this->get_energypoints() > 0 && (i < this->get_max()))
 	{
 		increase_health();
 		reduce_energy();
 		amount--;
+		i++;
 	}
 	std::cout <<  this->get_name() << " is repaired by " << temp << " points, now has " << this->get_hitpoints() << " hit points and " << this->get_energypoints() << " energy points left." << std::endl;
 }
@@ -97,6 +100,8 @@ std::string ClapTrap::get_name() const
 
 unsigned int ClapTrap::get_hitpoints() const
 {
+	if (this->hit_points > this->max)
+		return (this->max);
 	return (this->hit_points);
 }
 
@@ -108,6 +113,11 @@ unsigned int ClapTrap::get_energypoints() const
 unsigned int ClapTrap::get_attackdamage() const
 {
 	return (this->attack_damage);
+}
+
+unsigned int ClapTrap::get_max() const
+{
+	return (this->max);
 }
 
 //Helping functions & setters
