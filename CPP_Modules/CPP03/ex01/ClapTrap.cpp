@@ -27,7 +27,7 @@ ClapTrap& ClapTrap::operator=(const ClapTrap &copy)
 		this->hit_points = copy.get_hitpoints();
 		this->energy_points = copy.get_energypoints();
 		this->attack_damage = copy.get_attackdamage();
-		this->max = this->hit_points;
+		this->max = copy.get_hitpoints();
 	}
 	std::cout << "Copy assignment operator has been called" << std::endl;
 	return (*this);
@@ -51,7 +51,7 @@ void ClapTrap::attack(std::string &target)
 		std::cout << this->get_name() << " is out of hit points and cannot attack!" << std::endl;
 		return;
     }
-	std::cout << this->get_name() << " attacks " << target << ", causing " << 1 << " points of damage!" << std::endl;
+	std::cout << this->get_name() << " attacks " << target << ", causing " << this->get_attackdamage() << " points of damage!" << std::endl;
     reduce_energy();
     std::cout << this->get_name() << " now has " << this->get_energypoints() << " energy points left." << std::endl;
 }
@@ -62,8 +62,7 @@ void ClapTrap::takeDamage(unsigned int amount)
 		std::cout  << this->get_name() << " has not hitpoints left" << std::endl;
 	if (amount > 0)
 	{
-		set_attackdamage(amount);
-		std::cout << this->get_name() << " has taken this damage from it's opponent: " << this->get_attackdamage() << std::endl;
+		std::cout << this->get_name() << " has taken this damage from it's opponent: " << amount << std::endl;
 		while (amount > 0 && this->get_hitpoints() > 0)
 		{
 			reduce_health();
@@ -84,6 +83,8 @@ void ClapTrap::beRepaired(unsigned int amount)
 	unsigned int i = 0;
 	while (amount > 0 && this->get_energypoints() > 0 && (i < this->get_max()))
 	{
+		if (this->get_hitpoints() == this->get_max())
+			break;
 		increase_health();
 		reduce_energy();
 		amount--;

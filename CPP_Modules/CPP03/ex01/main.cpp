@@ -16,15 +16,12 @@ int main()
     // claptrap.beRepaired(3);
 
     // Mixed operations for ScavTrap
-    ScavTrap scavtrap("Player 2");
-    scavtrap.attack(target);
-    scavtrap.takeDamage(10);
-    scavtrap.beRepaired(5);
-    for (int i = 0; i < 33; ++i)
-    scavtrap.attack(target);
-    scavtrap.takeDamage(15);
-    scavtrap.beRepaired(400);
-    scavtrap.guardGate();
+    ScavTrap fragtrap("BB-TP");
+    fragtrap.attack(target);    // Should display attack message
+    fragtrap.takeDamage(20);    // Should reduce hit points by 20
+    fragtrap.beRepaired(42);    // Should increase hit points by 10
+    // Should ask for high five
+
 
     return 0;
 }
