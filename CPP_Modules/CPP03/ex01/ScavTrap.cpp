@@ -24,11 +24,6 @@ ScavTrap::ScavTrap(const ScavTrap& copy) : ClapTrap(copy)
 	std::cout << "ScavTrap copy constructor has been called" << std::endl;
 }
 
-ScavTrap::~ScavTrap()
-{
-	std::cout << "ScavTrap Deconstructor called" << std::endl;
-}
-
 ScavTrap& ScavTrap::operator=(const ScavTrap& copy)
 {
 	if (this != &copy)
@@ -36,6 +31,12 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& copy)
 	std::cout << "ScavTrap copy assigment operator has been called" << std::endl;
 	return (*this);
 }
+
+ScavTrap::~ScavTrap()
+{
+	std::cout << "ScavTrap Deconstructor called" << std::endl;
+}
+
 
 void	ScavTrap::guardGate()
 {
