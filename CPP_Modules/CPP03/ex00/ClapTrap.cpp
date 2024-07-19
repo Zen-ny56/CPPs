@@ -101,6 +101,8 @@ std::string ClapTrap::get_name() const
 
 unsigned int ClapTrap::get_hitpoints() const
 {
+	if (this->hit_points > this->max)
+		return (this->max);
 	return (this->hit_points);
 }
 
