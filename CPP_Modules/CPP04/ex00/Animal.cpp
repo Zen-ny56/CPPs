@@ -5,7 +5,7 @@ Animal::Animal() :type("Unknown")
     std::cout << "Animal constructor has been called" << std::endl;
 }
 
-Animal::Animal(const Animal& copy)
+Animal::Animal(const Animal& copy) :type(copy.type)
 {
     std::cout << "Animal Copy constructor has been called" << std::endl;
     *this = copy;
