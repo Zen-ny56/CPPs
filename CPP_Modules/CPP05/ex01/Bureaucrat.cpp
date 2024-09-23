@@ -63,6 +63,16 @@ void	Bureaucrat::decrement(void)
 	++grade;
 }
 
+void Bureaucrat::signForm(Form& form) const
+{
+    try {
+        form.beSigned(*this);
+        std::cout << name << " signed " << form.getName() << std::endl;
+    } catch (std::exception& e) {
+        std::cout << name << " couldn’t sign " << form.getName() << " because " << e.what() << std::endl;
+    }
+}
+
 std::string Bureaucrat::toString(void) const
 {
 	std::stringstream ss;

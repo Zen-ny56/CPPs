@@ -6,6 +6,8 @@
 #include <sstream>
 #include "Form.hpp"
 
+class Form;
+
 class   Bureaucrat 
 {
 	private:
