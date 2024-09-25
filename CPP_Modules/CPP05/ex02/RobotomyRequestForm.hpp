@@ -1,6 +1,9 @@
 #pragma once
 
 #include "AForm.hpp"
+#include "Bureaucrat.hpp"
+#include <cstdlib>  // for srand() and rand()
+#include <ctime>
 
 class RobotomyRequestForm: public AForm
 {

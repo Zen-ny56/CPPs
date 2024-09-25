@@ -1,6 +1,11 @@
 #pragma once
 
 #include "AForm.hpp"
+#include "Bureaucrat.hpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 class ShrubberyCreationForm: public AForm
 {
