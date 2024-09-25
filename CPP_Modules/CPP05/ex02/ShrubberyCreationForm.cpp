@@ -26,7 +26,6 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
-    // std::string file = NULL;
     if (AForm::getIsSigned() == false)
         throw AForm::FormNotSignedException();
      if (executor.getGrade() > AForm::getExecuteGrade())

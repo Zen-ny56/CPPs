@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Bureaucrat.hpp"
-
+#include <cstdio>
 class Bureaucrat; // Forward declaration to inform the compiler the existence without fully defining it 
 
 class AForm
