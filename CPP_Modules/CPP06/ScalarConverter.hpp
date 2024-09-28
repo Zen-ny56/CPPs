@@ -7,7 +7,8 @@
 #include <cstring> 
 #include <stdexcept>
 #include <cerrno>
-
+#include <sstream>
+#include <cstdio>
 typedef enum e_type {
 	UNKNOWN,  // unknown datatype 
 	CHAR,     // char datatype 
@@ -33,9 +34,14 @@ class ScalarConverter
 		static bool isDouble(const std::string& literal);
 		static bool isSpecialFloat(const std::string& literal);
 		static bool isSpecialDouble(const std::string& literal);
+		static void	convertChar(const std::string& literal);
+		static void	convertFloat(const std::string& literal);
+		static void	convertDouble(const std::string& literal);
+		static void	convertInt(const std::string& literal);
 	public:
 		~ScalarConverter();
 		static void convert(const std::string& literal);
+		static void	printConversions(char c, int i, float f, double d, const std::string& literal);
 		static t_type detect_type(const std::string& literal);
 		class UnknownTypeException: public std::exception
 		{

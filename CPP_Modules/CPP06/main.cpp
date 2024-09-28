@@ -15,10 +15,6 @@ int main(int argc, char* argv[])
 	{
 		std::cerr << e.what() << std::endl; // Output the error message
 		return 1; // Return error code
-	} catch (const ScalarConverter::OutOfRangeException &e)
-	{
-		std::cerr << e.what() << std::endl;
-		return 1;
 	}
 	catch (const ScalarConverter::EmptyStringException &e)
 	{
@@ -26,6 +22,11 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	catch (const ScalarConverter::WhiteSpaceException &e)
+	{
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
+	catch (const ScalarConverter::OutOfRangeException &e)
 	{
 		std::cerr << e.what() << std::endl;
 		return 1;
