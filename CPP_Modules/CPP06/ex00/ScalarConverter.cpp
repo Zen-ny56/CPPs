@@ -28,7 +28,6 @@ bool ScalarConverter::isFloat(const std::string& literal)
 		return (true);
 	if (*endPtr != 'f' || *(endPtr + 1) != '\0')
 	{
-		std::cout << "Fails at float" << std::endl;
 		throw OutOfRangeException();
 	}
 	return true;
@@ -45,7 +44,6 @@ bool ScalarConverter::isDouble(const std::string& literal)
    if (errno == ERANGE || *endPtr != '\0' ||
    		doubleVal > std::numeric_limits<double>::max() || doubleVal < std::numeric_limits<double>::min())
 	{
-		std::cout << "Fails at Double" << std::endl;
 		throw OutOfRangeException();
 	}
     return true;  // Valid double
@@ -93,6 +91,8 @@ void ScalarConverter::printConversions(char c, int i, float f, double d, const s
 	if (literal.length() > 11 || (literal.length() == 11 && literal > intMaxStr) || 
         (literal.length() == 11 && literal < intMinStr))
         std::cout << "int   : Impossible" << std::endl;
+	else if (std::isinf(f) || std::isnan(f) || std::isinf(d) || std::isnan(d))
+		std::cout << "int   : Impossible" << std::endl;
     else if (i >= std::numeric_limits<int>::min() && i <= std::numeric_limits<int>::max())
 		std::cout << "int   : " << i << std::endl;
 	else
@@ -149,18 +149,6 @@ void	ScalarConverter::convertDouble(const std::string& literal)
 {
 	char* end;
 	float f = std::strtof(literal.c_str(), &end);
-  	if (std::isinf(f))
-    {
-        std::cout << "float : " << ((f > 0) ? "+inff" : "-inff") << std::endl;
-        std::cout << "double: " << ((f > 0) ? "+inf" : "-inf") << std::endl;
-        return;
-    }
-    if (std::isnan(f))
-    {
-        std::cout << "float : nanf" << std::endl;
-        std::cout << "double: nan" << std::endl;
-        return;
-    }
 	int i = static_cast<int>(f);
 	char c = static_cast<char>(i);
 	double d = static_cast<double>(f);
@@ -197,25 +185,22 @@ void ScalarConverter::convert(const std::string& literal)
 			convertDouble(literal);
 			break;
 		case PINFF:
-			std::cout << "float : +inff" << std::endl;
-			std::cout << "double: +inf" << std::endl;
+			convertFloat(literal);
 			break;
 		case NINFF:
-			std::cout << "float : -inff" << std::endl;
-			std::cout << "double: -inf" << std::endl;
+			convertFloat(literal);
 			break;
 		case NANNF:
-			std::cout << "float : nanf" << std::endl;
-			std::cout << "double: nan" << std::endl;
+			convertFloat(literal);
 			break;
 		case PINF:
-			std::cout << "double: +inf" << std::endl;
+			convertDouble(literal);
 			break;
 		case NINF:
-			std::cout << "double: -inf" << std::endl;
+			convertDouble(literal);
 			break;
 		case NANN:
-			std::cout << "double: nan" << std::endl;
+			convertDouble(literal);
 			break;
 	}
 }
