@@ -1,11 +1,11 @@
-NAME	= scalar
+NAME	= serializer
 	
 CC		= c++
 FLAGS	= -Wall -Wextra -Werror -std=c++98
 RM		= rm -rf
 
 OBJDIR = obj
-SRC 	  = main.cpp ScalarConverter.cpp
+SRC 	  = main.cpp Serializer.cpp
 OBJ_FILES = $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 
 $(OBJDIR)/%.o: %.cpp

@@ -17,6 +17,8 @@ Base* generate()
 
 void identify(Base* p)
 {
+	if (p == NULL)
+		std::cout << "It;s null" << std::endl;
 	if (dynamic_cast<A*>(p))
 		std::cout << "A" << std::endl;
 	else if (dynamic_cast<B*>(p))
