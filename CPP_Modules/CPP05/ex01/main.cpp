@@ -5,7 +5,7 @@ int main()
 {
     try {
         // Creating Bureaucrats with different grades
-        Bureaucrat john("John", 3); // High grade
+        Bureaucrat john("John", 4); // High grade
         Bureaucrat alice("Alice", 140); // Low grade
 
         // Creating Forms with different grade requirements
