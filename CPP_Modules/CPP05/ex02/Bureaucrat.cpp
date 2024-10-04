@@ -35,7 +35,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat &copy)
 
 Bureaucrat::~Bureaucrat()
 {
-	std::cout << "Deconstructor has been called" << std::endl;
+	std::cout << "Bureaucrat Deconstructor has been called" << std::endl;
 	return ;
 }
 

@@ -24,7 +24,6 @@ Form& Form::operator=(const Form &copy)
 		this->isSigned = copy.getIsSigned();
 		this->signGrade = copy.getSignGrade();
 		this->executeGrade = copy.getExecuteGrade();
-	
 	}
 	return (*this);
 }
@@ -34,7 +33,6 @@ Form::~Form()
 	std::cout << "Form destructor called" << std::endl;
 }
 
-// Getters
 std::string Form::getName() const
 {
 	return (this->name);

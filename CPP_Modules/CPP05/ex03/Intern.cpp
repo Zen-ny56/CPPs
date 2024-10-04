@@ -14,14 +14,14 @@ Intern::Intern(const Intern& other)
 Intern& Intern::operator=(const Intern& other)
 {
 	(void)other;
-	std::cout << "Intern copy operator has been called" << std::endl;
+	std::cout << "Intern copy assignment operator has been called" << std::endl;
 	return (*this);
 }
+
 Intern::~Intern()
 {
 	std::cout << "Intern deconstructor has been called" << std::endl;
 }
-
 
 int getFormIndex(const std::string& formName)
 {
@@ -37,7 +37,7 @@ AForm* Intern::makeForm(const std::string& formName, const std::string& target) 
 {
 	switch (getFormIndex(formName))
 	{
-		case 0:  // ShrubberyCreationForm
+		case 0: 
 			std::cout << "Intern creates ShrubberyCreationForm" << std::endl;
 			return (new ShrubberyCreationForm(target));
 		case 1:  // RobotomyRequestForm

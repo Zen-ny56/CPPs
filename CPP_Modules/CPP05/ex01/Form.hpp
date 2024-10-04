@@ -18,7 +18,7 @@ class Form
 		~Form();
 		//Getter methods
 		std::string getName() const; // Getter 
-		bool getIsSigned() const; // 
+		bool getIsSigned() const;
 		int getSignGrade() const;
 		int getExecuteGrade() const;
    		 // Method to sign the form

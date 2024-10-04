@@ -3,7 +3,7 @@
 int main() {
     try {
         // Creating a valid bureaucrat
-        Bureaucrat b1("Alice", 2);
+        Bureaucrat b1("Alice", 1);
         std::cout << b1 << std::endl;
 
         // Incrementing grade (grade goes from 2 to 1)
@@ -17,8 +17,7 @@ int main() {
     }
 
     try {
-        // Creating another bureaucrat with a very low grade
-        Bureaucrat b2("Bob", 149);
+        Bureaucrat b2("Bob", 123);
         std::cout << b2 << std::endl;
 
         // Decrementing grade (grade goes from 149 to 150)

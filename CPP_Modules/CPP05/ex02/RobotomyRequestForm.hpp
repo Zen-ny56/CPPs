@@ -2,7 +2,7 @@
 
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
-#include <cstdlib>  // for srand() and rand()
+#include <cstdlib>
 #include <ctime>
 
 class RobotomyRequestForm: public AForm
