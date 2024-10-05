@@ -96,3 +96,8 @@ const char* Bureaucrat::GradeTooHighException::what(void) const throw() {
 const char* Bureaucrat::GradeTooLowException::what(void) const throw(){
     return "Bureaucrat's Grade is too Low!";
 }
+
+void	Bureaucrat::printsomethin()
+{
+	std::cout << "DONT" << std::endl;
+};
