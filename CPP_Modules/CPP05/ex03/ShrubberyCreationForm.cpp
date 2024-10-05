@@ -1,8 +1,13 @@
 #include "ShrubberyCreationForm.hpp"
 
+ShrubberyCreationForm::ShrubberyCreationForm(): AForm()
+{
+    std::cout << "Shrubbery...... default constructor has been called" << std::endl;
+}
+
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target): AForm("ShrubberyCreationForm", 145, 137), target(target)
 {
-    std::cout << "Parametized constructor has been called\n" << std::endl;
+    std::cout << "Parametized constructor has been called" << std::endl;
 };
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& copy) : AForm(copy)

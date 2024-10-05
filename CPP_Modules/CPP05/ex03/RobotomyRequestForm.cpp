@@ -1,5 +1,10 @@
 #include "RobotomyRequestForm.hpp"
 
+RobotomyRequestForm::RobotomyRequestForm(): AForm()
+{
+    std::cout << "Robotomy... Default constructor has been called" << std::endl;
+}
+
 RobotomyRequestForm::RobotomyRequestForm(std::string target): AForm("RobotomyRequestForm", 72, 45), target(target)
 {
     std::cout << "Parametized constructor has been called\n" << std::endl;

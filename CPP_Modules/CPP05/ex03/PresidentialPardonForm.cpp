@@ -1,8 +1,13 @@
 #include "PresidentialPardonForm.hpp"
 
+PresidentialPardonForm::PresidentialPardonForm(): AForm()
+{
+    std::cout << "Default Presidential ..... default constructor has been called" << std::endl;
+}
+
 PresidentialPardonForm::PresidentialPardonForm(std::string target): AForm("PresidentialPardonForm", 25, 5), target(target)
 {
-    std::cout << "Parametized constructor has been called\n" << std::endl;
+    std::cout << "Parametized constructor has been called" << std::endl;
 };
 
 PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& copy) : AForm(copy)

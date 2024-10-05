@@ -9,19 +9,21 @@ class AForm
 	protected:
 		const std::string name; // Name of the Bu....
 		bool isSigned; // Whether the AForm is sign
-		unsigned int signGrade; // Grade needed to sign AForm
-		unsigned int executeGrade; // Grade needed to execute AForm
+		const int signGrade; // Grade needed to sign AForm
+		const int executeGrade; // Grade needed to execute AForm
 	public:
 		AForm();
 		AForm(const std::string name, int signGrade, int executeGrade);
 		AForm(const AForm &copy);
 		AForm& operator=(const AForm &other);
 		virtual ~AForm();
+
 		std::string getName() const; // Getter 
 		bool getIsSigned() const; // Check if the form has been signed
 		int getSignGrade() const;
-		unsigned int getExecuteGrade() const;
+		int getExecuteGrade() const;
    		 // Method to sign the form
+
     	void beSigned(const Bureaucrat& b); 
 		virtual void execute(Bureaucrat const & executor) const = 0;
 		class GradeTooHighException : public std::exception

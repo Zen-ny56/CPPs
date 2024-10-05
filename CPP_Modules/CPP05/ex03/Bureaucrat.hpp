@@ -12,18 +12,21 @@ class   Bureaucrat
 {
 	private:
 	 	const std::string name;
-		unsigned int grade;
+		int grade;
 	public:
 		Bureaucrat();
-		Bureaucrat(std::string name, unsigned int grade);
+		Bureaucrat(std::string name, int grade);
 		Bureaucrat(const Bureaucrat& copy);
 		Bureaucrat& operator=(const Bureaucrat& copy);
 		~Bureaucrat();
+
 		void	increment();
 		void	decrement();
-		unsigned int 	getGrade(void) const;
+
+		int 	getGrade(void) const;
 		std::string		getName(void) const;
 		std::string 	toString(void) const;
+	
 		void signForm(AForm& form) const;
         void executeForm(const AForm& form) const;
 		class GradeTooHighException: public std::exception
