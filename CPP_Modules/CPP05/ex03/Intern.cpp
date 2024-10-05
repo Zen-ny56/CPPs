@@ -48,7 +48,6 @@ AForm* Intern::makeForm(const std::string& formName, const std::string& target) 
 			return new PresidentialPardonForm(target);
 		default:
 			throw ForNotException();
-			return (NULL);
 	}
 }
 

@@ -1,47 +1,29 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-int main()
-{
+int main() {
     try {
-        // Creating Bureaucrats with different grades
-        Bureaucrat b();
-        // Bureaucrat john("John", 4); // High grade
-        // Bureaucrat alice("Alice", 140); // Low grade
+        // Create a Bureaucrat with a low grade
+        Bureaucrat john("John", 100);  // Grade is too low for contract
 
-        // // Creating Forms with different grade requirements
-        // Form contract("Contract", 5, 10);
-        // Form report("Report", 130, 135);
+        // Create a form that requires a high grade to sign
+        Form contract("Contract", 50, 5);
 
-        // // Attempting to sign forms
-        // // std::cout << john << std::endl;
-        // // std::cout << contract << std::endl;
-        // john.decrement();
-        // john.decrement();
-        // john.signForm(contract);  // Should succeed
-        // // std::cout << contract << std::endl;
-
-        // // std::cout << alice << std::endl;
-        // // std::cout << report << std::endl;
-        // alice.signForm(report);  // Should succeed
-        // // std::cout << report << std::endl;
-
-        // std::cout << std::endl;
-
-        // // Attempt to sign a form where the Bureaucrat's grade is too low
-        // // std::cout << alice << std::endl;
-        // // std::cout << contract << std::endl;
-        // alice.signForm(contract); // Should fail due to low grade
-
+        // Try signing the form (this should throw)
+        john.signForm(contract);
     } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        std::cerr << "Exception caught in main: " << e.what() << std::endl;
     }
-    try {
-        Bureaucrat invalidBureaucrat("Invalid", 0);  // Should throw exception
 
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-    }
+    // After catching the exception, program continues to run
+    std::cout << "Program continues running after exception.\n";
+
+    // Create another Bureaucrat and Form to show the program hasn't terminated
+    Bureaucrat alice("Alice", 10);  // High grade
+    Form report("Report", 20, 52);
+
+    // Try signing a form where Alice's grade is sufficient
+    alice.signForm(report);
 
     return 0;
 }
