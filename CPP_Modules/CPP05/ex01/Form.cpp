@@ -1,5 +1,11 @@
 #include "Form.hpp"
 
+Form::Form(): signGrade(0), executeGrade(0)
+{
+	std::cout << "Default constructor has been called" << std::endl;
+	return;
+}
+
 Form::Form(const std::string name, int signGrade, int executeGrade): name(name), isSigned(false), signGrade(signGrade), executeGrade(executeGrade)
 {
 	if (signGrade < 1 || executeGrade < 1)
@@ -22,8 +28,6 @@ Form& Form::operator=(const Form &copy)
 	if (this != &copy)
 	{
 		this->isSigned = copy.getIsSigned();
-		this->signGrade = copy.getSignGrade();
-		this->executeGrade = copy.getExecuteGrade();
 	}
 	return (*this);
 }
