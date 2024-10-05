@@ -2,15 +2,12 @@
 
 int main() {
     try {
-        // Creating a valid bureaucrat
-        Bureaucrat b1("Alice", 1);
+        Bureaucrat b1("Alice", -2147483648);
         std::cout << b1 << std::endl;
 
-        // Incrementing grade (grade goes from 2 to 1)
         b1.increment();
         std::cout << b1 << std::endl;
-        // Trying to increment past the upper limit
-        b1.increment(); // This should throw GradeTooHighException
+        b1.increment();
     }
     catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
@@ -19,20 +16,15 @@ int main() {
     try {
         Bureaucrat b2("Bob", 123);
         std::cout << b2 << std::endl;
-
-        // Decrementing grade (grade goes from 149 to 150)
         b2.decrement();
         std::cout << b2 << std::endl;
-
-        // Trying to decrement past the lower limit
-        b2.decrement(); // This should throw GradeTooLowException
+        b2.decrement();
     }
     catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
-    // Attempt to create a bureaucrat with invalid grade
     try {
-        Bureaucrat b3("Charlie", 0); // Should throw GradeTooHighException
+        Bureaucrat b3("Charlie", 0);
     }
     catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;

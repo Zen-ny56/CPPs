@@ -6,7 +6,7 @@ Bureaucrat::Bureaucrat()
 	return ;
 }
 
-Bureaucrat::Bureaucrat(const std::string name, unsigned int grade) :name(name)
+Bureaucrat::Bureaucrat(const std::string name, int grade) :name(name)
 {
 	if (grade < 1)
 		throw GradeTooHighException();
@@ -44,7 +44,7 @@ std::string Bureaucrat::getName(void) const
 	return (name);
 }
 
-unsigned int Bureaucrat::getGrade(void) const
+int Bureaucrat::getGrade(void) const
 {
 	return (grade);
 }
@@ -63,16 +63,9 @@ void	Bureaucrat::decrement(void)
 	++grade;
 }
 
-std::string Bureaucrat::toString(void) const
-{
-	std::stringstream ss;
-	ss << getName() << ", bureaucrat grade " << getGrade();
-	return (ss.str());
-}
-
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat)
 {
-    os << bureaucrat.toString();
+    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
 	return (os);
 }
 
