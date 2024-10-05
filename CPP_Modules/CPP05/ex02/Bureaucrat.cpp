@@ -70,6 +70,7 @@ void Bureaucrat::signForm(AForm& form) const
         std::cout << name << " signed " << form.getName() << std::endl;
     } catch (std::exception& e) {
         std::cout << name << " couldn’t sign " << form.getName() << " because " << e.what() << std::endl;
+		throw;
     }
 }
 
@@ -80,7 +81,13 @@ void Bureaucrat::executeForm(const AForm& form) const
         std::cout << this->getName() << " executed " << form.getName() << std::endl;
     } catch (std::exception &e) {
         std::cerr << this->getName() << " couldn't execute form: " << e.what() << std::endl;
+		throw;
     }
+}
+
+void	Bureaucrat::printsomethin()
+{
+	std::cout << "Bot" << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat)
