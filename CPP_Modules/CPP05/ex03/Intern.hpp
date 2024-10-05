@@ -15,4 +15,10 @@ class Intern
     	Intern& operator=(const Intern& other);
     	~Intern();
     	AForm* makeForm(const std::string& formName, const std::string& target) const;
+
+		class ForNotException: public std::exception
+		{
+			public:
+				const char* what() const throw();
+		};
 };

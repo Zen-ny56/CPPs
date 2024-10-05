@@ -47,7 +47,11 @@ AForm* Intern::makeForm(const std::string& formName, const std::string& target) 
 			std::cout << "Intern creates PresidentialPardonForm" << std::endl;
 			return new PresidentialPardonForm(target);
 		default:
-			std::cout << "Error: form name \"" << formName << "\" does not exist." << std::endl;
+			throw ForNotException();
 			return (NULL);
 	}
+}
+
+const char* Intern::ForNotException::what(void) const throw(){
+    return "Form does not exist cannot be created";
 }
