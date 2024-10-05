@@ -1,6 +1,11 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
+AForm::AForm() :signGrade(0), executeGrade(0)
+{
+	std::cout << "Default constructor has been called" << std::endl;
+}
+
 AForm::AForm(const std::string name, int signGrade, int executeGrade): name(name), isSigned(false), signGrade(signGrade), executeGrade(executeGrade)
 {
 	if (signGrade < 1 || executeGrade < 1)
@@ -23,9 +28,6 @@ AForm& AForm::operator=(const AForm &copy)
 	if (this != &copy)
 	{
 		this->isSigned = copy.getIsSigned();
-		this->signGrade = copy.getSignGrade();
-		this->executeGrade = copy.getExecuteGrade();
-	
 	}
 	return (*this);
 }
@@ -51,7 +53,7 @@ int AForm::getSignGrade() const
 	return (this->signGrade);
 }
 
-unsigned int AForm::getExecuteGrade() const
+int AForm::getExecuteGrade() const
 {
 	return (this->executeGrade);
 }

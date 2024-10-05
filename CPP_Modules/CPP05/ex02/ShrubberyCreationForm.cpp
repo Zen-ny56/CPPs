@@ -1,8 +1,13 @@
 #include "ShrubberyCreationForm.hpp"
 
+ShrubberyCreationForm::ShrubberyCreationForm(): AForm()
+{
+    std::cout << "Default constructor has been called" << std::endl;
+}
+
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target): AForm("ShrubberyCreationForm", 145, 137), target(target)
 {
-    std::cout << "Parametized constructor has been called\n" << std::endl;
+    std::cout << "Parametized constructor has been called" << std::endl;
 };
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& copy) : AForm(copy)
@@ -30,7 +35,6 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
         throw AForm::FormNotSignedException();
      if (executor.getGrade() > AForm::getExecuteGrade())
         throw AForm::GradeTooLowException();
-    //Creating a new file
     std::ofstream file((target + "_shrubbery").c_str());
     if (file.is_open())
     {
