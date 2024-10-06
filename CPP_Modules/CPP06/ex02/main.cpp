@@ -5,10 +5,9 @@
 
 int main()
 {
-    Base* base = NULL; // For testing, this will create an instance of B
+    Base* base = generate(); // For testing, this will create an instance of B
     // identify(base);       // Output should be "B"
     identify(*base);      // Output should be "B" using reference
-
     delete base;
     return 0;
 }

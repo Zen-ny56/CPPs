@@ -38,7 +38,6 @@ void identify(Base& p)
 	catch (...){}
 	try
 	{
-		// Try casting to B directly without assigning to a variable
 		(void)dynamic_cast<B&>(p);
 		std::cout << "B" << std::endl;
 		return ;
@@ -46,7 +45,6 @@ void identify(Base& p)
 	catch (...) {}
 	try
 	{
-		// Try casting to C directly without assigning to a variable
 		(void)dynamic_cast<C&>(p);
 		std::cout << "C" << std::endl;
 		return ;

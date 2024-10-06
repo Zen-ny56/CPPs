@@ -4,4 +4,6 @@
 
 class B: public Base
 {
+    B();
+    ~B();
 };
