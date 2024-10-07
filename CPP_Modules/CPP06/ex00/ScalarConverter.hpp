@@ -40,11 +40,11 @@ class ScalarConverter
 		static void	convertFloat(const std::string& literal);
 		static void	convertDouble(const std::string& literal);
 		static void	convertInt(const std::string& literal);
-	public:
-		~ScalarConverter();
-		static void convert(const std::string& literal);
 		static void	printConversions(char c, int i, float f, double d, const std::string& literal);
 		static t_type detect_type(const std::string& literal);
+		~ScalarConverter();
+	public:
+		static void convert(const std::string& literal);
 		class UnknownTypeException: public std::exception
 		{
 			public:

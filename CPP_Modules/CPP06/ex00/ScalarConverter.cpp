@@ -24,7 +24,7 @@ bool ScalarConverter::isFloat(const std::string& literal)
 		return false;
 	float floatVal = std::strtof(literal.c_str(), &endPtr);
 	(void)floatVal;
-	if (*endPtr == '\0' && *(endPtr - 1) != 'f' )
+	if (*endPtr == '\0' && *(endPtr - 1) != 'f')
 		return (true);
 	if (*endPtr != 'f' || *(endPtr + 1) != '\0')
 	{
@@ -37,7 +37,6 @@ bool ScalarConverter::isDouble(const std::string& literal)
 {
     char* endPtr;
     errno = 0;
-
     if (literal.find('.') == std::string::npos)
 		return false;
 	double doubleVal = std::strtod(literal.c_str(), &endPtr);
@@ -80,8 +79,8 @@ t_type ScalarConverter::detect_type(const std::string& literal)
 
 void ScalarConverter::printConversions(char c, int i, float f, double d, const std::string &literal)
 {
-	const char* intMinStr = "-2147483648"; // std::numeric_limits<int>::min()
-	const char* intMaxStr = "2147483647";  // std::numeric_limits<int>::max()
+	const char* intMinStr = "-2147483648";
+	const char* intMaxStr = "2147483647";
 	if (std::isprint(c) && (i >= 0 && i <= 127))
         std::cout << "char  : '" << c << "'" << std::endl;
 	else if (i < 0 || i > 127)
