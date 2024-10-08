@@ -24,24 +24,18 @@ Array<T>& Array<T>::operator=(const Array& copy)
 {
     if (this != &copy)
     {
-        // Temporary buffer for the new data to ensure exception safety
         T* newData = NULL;
-
         if (copy._size > 0)
         {
             newData = new T[copy._size];
             for (unsigned int i = 0; i < copy._size; ++i)
                 newData[i] = copy.data[i];
         }
-
-        // Deallocate the old data and assign the new data
         delete[] data;
         data = newData;
         _size = copy._size;
     }
-
     std::cout << "Array copy assignment operator has been called" << std::endl;
-
     return *this;
 }
 
