@@ -1,5 +1,10 @@
 #include "Span.hpp"
 
+Span::Span()
+{
+	std::cout << "Default size constructor has been called" << std::endl;
+}
+
 Span::Span(unsigned int N) : maxSize(N)
 {
 	std::cout << "Span constructor has been called" << std::endl;

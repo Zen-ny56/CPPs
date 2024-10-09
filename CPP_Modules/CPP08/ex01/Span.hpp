@@ -11,6 +11,7 @@ class Span
 		std::vector<int> container;
 		unsigned int maxSize;
 	public:
+		Span();
 		Span(unsigned int N);
 		Span(const Span& other);
 		Span& operator=(const Span& other);
@@ -25,7 +26,6 @@ class Span
 			public:
 				const char* what() const throw();
 		};
-
 		class NotEnoughElementsException : public std::exception
 		{
 			public:
