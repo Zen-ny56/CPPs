@@ -44,18 +44,21 @@ int	BitcoinExchange::isValidDate(const std::string& date)
     std::string monthStr = date.substr(5, 2);
     std::string dayStr = date.substr(8, 2);
     // Check if all parts are digits
-    for (char c : yearStr)
+	for (std::string::size_type i = 0; i < yearStr.size(); ++i)
 	{
+    	char c = yearStr[i];
 		if (!isdigit(c))
 			return 0;
 	}
-    for (char c : monthStr)
+ 	for (std::string::size_type i = 0; i < monthStr.size(); ++i)
 	{
+    	char c = monthStr[i];
 		if (!isdigit(c))
 			return 0;
 	}
-    for (char c : dayStr)
+ 	for (std::string::size_type i = 0; i < dayStr.size(); ++i)
 	{
+    	char c = dayStr[i];
 		if (!isdigit(c))
 			return 0;
 	}
@@ -83,12 +86,20 @@ int	BitcoinExchange::isValidDate(const std::string& date)
 	return 1; // Valid date
 }
 
-void BitcoinExchange::parseCSV(const std::string &csvFilePath, std::map<std::string, float> &exchangeRates)
-{   
+//For data.csv file
+void BitcoinExchange::parseFile(const std::string &csvFilePath, std::map<std::string, float> &exchangeRates, int a)
+{
+	(void)a;
 	std::ifstream csvFile(csvFilePath.c_str());
 	if (!csvFile.is_open())
 		throw std::runtime_error("Error: could not open CSV file.");
 	std::string line;
+	std::getline(csvFile, line); // Skip first line
+	if (!std::getline(csvFile, line)) 
+	{
+		csvFile.close();
+		throw std::runtime_error("Error: CSV file is empty or could not read the header.");
+	}
 	while (std::getline(csvFile, line))
 	{
 		std::stringstream ss(line);
@@ -103,34 +114,89 @@ void BitcoinExchange::parseCSV(const std::string &csvFilePath, std::map<std::str
 				if (*end != '\0')
 				{
 					csvFile.close();
-					throw OutOfRangeException();
+					throw std::runtime_error("Conversion to float failed");
 				}
-				if (f > 1000 || f < 0)
+				if (f < 0 || std::isinf(f))
 				{
 					csvFile.close();
-					throw OutOfRangeException();
+					throw std::runtime_error("Float passed float max");
 				}
 				exchangeRates[date] = f;
 			} 
 			else
 			{
 				csvFile.close();
-				throw	OutOfRangeException();
+				throw std::runtime_error("Error in dates or data type on exchange rates entered");
 			}
 		}
 		csvFile.close();
 	}
+	if (exchangeRates.empty())
+	{
+		throw std::runtime_error("Invalid data found in the data file.csv file");
+	}
+}
+
+//Our File
+void BitcoinExchange::parseFile(const std::string &inputFilePath, std::map<std::string, float> &bitcoinPrices)
+{   
+	std::ifstream inputFile(inputFilePath.c_str());
+	if (!inputFile.is_open())
+		throw std::runtime_error("Error: could not open CSV file.");
+	std::string line;
+	while (std::getline(inputFile, line))
+	{
+		std::stringstream ss(line);
+		std::string date;
+		std::string priceStr;
+		if (std::getline(ss, date, ',') && std::getline(ss, priceStr))
+		{
+			if (isValidDate(date) && isValidPrice(priceStr))
+			{
+				char *end;
+				float f = std::strtof(priceStr.c_str(), &end);
+				if (*end != '\0')
+				{
+					inputFile.close();
+					throw std::runtime_error("Conversion to float failed");
+				}
+				if (f < 0 || f > 1000)
+				{
+					inputFile.close();
+					throw std::runtime_error("Number for user file was way too large");
+				}
+				bitcoinPrices[date] = f;
+			} 
+			else
+			{
+				inputFile.close();
+				throw std::runtime_error("Error in dates or data type on bitcoin prices entered");
+			}
+		}
+		inputFile.close();
+	}
+	if (bitcoinPrices.empty())
+	{
+		throw std::runtime_error("Invalid data found in the input file, or no data at all");
+	}
+}
+
+void BitcoinExchange::testParsing(const std::map<std::string, float>& rates)
+{
+    for (std::map<std::string, float>::const_iterator it = rates.begin(); it != rates.end(); ++it)
+    {
+        const std::string &key = it->first;
+        float value = it->second;
+        std::cout << key << " -> " << value << std::endl;
+    }
 }
 
 void    BitcoinExchange::bitByBit(const std::string &csvFilePath, const std::string &inputFilePath)
 {
+	(void)inputFilePath;
 	std::map<std::string, float> exchangeRates;
-	parseCSV(csvFilePath, exchangeRates);
-	std::map<std::string, float> bitcoinPrices;
-	parseInputFile(inputFilePath, bitcoinPrices);
-}
-
-const char* BitcoinExchange::OutOfRangeException::what(void) const throw()
-{
-	return "Error with file";
+	parseFile(csvFilePath, exchangeRates, 0);
+	testParsing(exchangeRates);
+	// std::map<std::string, float> bitcoinPrices;
+	// parseFile(inputFilePath, bitcoinPrices);
 }

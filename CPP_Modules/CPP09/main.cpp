@@ -10,5 +10,12 @@ int main(int ac, char **av)
 	}
 	std::string InputFileName = av[1];
 	std::string csvFileName = "data.csv";
-	BitcoinExchange::bitByBit(csvFileName, InputFileName);
+	try
+	{
+		BitcoinExchange::bitByBit(csvFileName, InputFileName);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 }
