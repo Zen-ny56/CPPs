@@ -7,6 +7,9 @@ Span::Span()
 
 Span::Span(unsigned int N) : maxSize(N)
 {
+	if (N > 2147483647)
+		throw std::runtime_error("Size of array passed in is way too large");
+	maxSize = N;
 	std::cout << "Span constructor has been called" << std::endl;
 }
 
@@ -15,7 +18,7 @@ Span::~Span()
 	std::cout << "Span deconstructor has been called" << std::endl;
 }
 
-Span::Span(const Span& other) : container(other.container), maxSize(other.maxSize)\
+Span::Span(const Span& other) : container(other.container), maxSize(other.maxSize)
 {
 	std::cout << "Copy constructor has been called" << std::endl;
 }
