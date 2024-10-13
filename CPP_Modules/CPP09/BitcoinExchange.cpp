@@ -106,27 +106,9 @@ void BitcoinExchange::takedata(const std::string &csvFilePath, std::map<std::str
 		std::string priceStr;
 		if (std::getline(ss, date, ',') && std::getline(ss, priceStr))
 		{
-			// if (isValidDate(date) && isValidPrice(priceStr))
-			// {
-				char *end;
-				float f = std::strtof(priceStr.c_str(), &end);
-				// if (*end != '\0')
-				// {
-				// 	csvFile.close();
-				// 	throw std::runtime_error("Conversion to float failed");
-				// }
-				// if (f < 0 || std::isinf(f))
-				// {
-				// 	csvFile.close();
-				// 	throw std::runtime_error("Float passed float max");
-				// }
-				rates[date] = f;
-			// } 
-			// else
-			// {
-			// 	csvFile.close();
-			// 	throw std::runtime_error("Error in dates or data type on exchange rates entered");
-			// }
+			char *end;
+			float f = std::strtof(priceStr.c_str(), &end);
+			rates[date] = f;
 		}
 	}
 	csvFile.close();
@@ -157,27 +139,9 @@ void BitcoinExchange::takedata(const std::string &inputFilePath, std::map<std::s
 		{
 			date = date.substr(0, date.find_last_not_of(" \t") + 1);  // Trim trailing
 			priceStr = priceStr.substr(priceStr.find_first_not_of(" \t"));  // Trim leading
-			// if (isValidDate(date) && isValidPrice(priceStr))
-			// {
-				char *end;
-				float f = std::strtof(priceStr.c_str(), &end);
-				// if (*end != '\0')
-				// {
-				// 	inputFile.close();
-				// 	throw std::runtime_error("Conversion to float failed");
-				// }
-				// if (f < 0 || f > 1000)
-				// {
-				// 	inputFile.close();
-				// 	throw std::runtime_error("Number for user file was way too large");
-				// }
-				bitcoinPrices[date] = f;
-			// } 
-			// else
-			// {
-			// 	inputFile.close();
-			// 	throw std::runtime_error("Error in dates or data type on bitcoin prices entered");
-			// }
+			char *end;
+			float f = std::strtof(priceStr.c_str(), &end);
+			bitcoinPrices[date] = f;
 		}
 	}
 	inputFile.close();
@@ -204,14 +168,9 @@ void    BitcoinExchange::bitByBit(const std::string &csvFilePath, const std::str
 	takedata(csvFilePath, exchangeRates, 0);
 	std::map<std::string, float> bitcoinPrices;
 	takedata(inputFilePath, bitcoinPrices);
+	testParsing(bitcoinPrices);
 	execute(exchangeRates, bitcoinPrices);
 }
-
-// void	BitcoinExchange::execute(const std::map<std::string, float>& exchangeRates, const std::map<std::string, float>& bitcoinPrices)
-// {
-	
-// }
-
 
 void BitcoinExchange::execute(const std::map<std::string, float>& exchangeRates, const std::map<std::string, float>& bitcoinPrices)
 {
