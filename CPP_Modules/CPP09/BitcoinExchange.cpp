@@ -87,14 +87,13 @@ int	BitcoinExchange::isValidDate(const std::string& date)
 }
 
 //For data.csv file
-void BitcoinExchange::parseFile(const std::string &csvFilePath, std::map<std::string, float> &exchangeRates, int a)
+void BitcoinExchange::takedata(const std::string &csvFilePath, std::map<std::string, float> &rates, int a)
 {
 	(void)a;
 	std::ifstream csvFile(csvFilePath.c_str());
 	if (!csvFile.is_open())
 		throw std::runtime_error("Error: could not open CSV file.");
 	std::string line;
-	std::getline(csvFile, line); // Skip first line
 	if (!std::getline(csvFile, line)) 
 	{
 		csvFile.close();
@@ -107,74 +106,81 @@ void BitcoinExchange::parseFile(const std::string &csvFilePath, std::map<std::st
 		std::string priceStr;
 		if (std::getline(ss, date, ',') && std::getline(ss, priceStr))
 		{
-			if (isValidDate(date) && isValidPrice(priceStr))
-			{
+			// if (isValidDate(date) && isValidPrice(priceStr))
+			// {
 				char *end;
 				float f = std::strtof(priceStr.c_str(), &end);
-				if (*end != '\0')
-				{
-					csvFile.close();
-					throw std::runtime_error("Conversion to float failed");
-				}
-				if (f < 0 || std::isinf(f))
-				{
-					csvFile.close();
-					throw std::runtime_error("Float passed float max");
-				}
-				exchangeRates[date] = f;
-			} 
-			else
-			{
-				csvFile.close();
-				throw std::runtime_error("Error in dates or data type on exchange rates entered");
-			}
+				// if (*end != '\0')
+				// {
+				// 	csvFile.close();
+				// 	throw std::runtime_error("Conversion to float failed");
+				// }
+				// if (f < 0 || std::isinf(f))
+				// {
+				// 	csvFile.close();
+				// 	throw std::runtime_error("Float passed float max");
+				// }
+				rates[date] = f;
+			// } 
+			// else
+			// {
+			// 	csvFile.close();
+			// 	throw std::runtime_error("Error in dates or data type on exchange rates entered");
+			// }
 		}
-		csvFile.close();
 	}
-	if (exchangeRates.empty())
+	csvFile.close();
+	if (rates.empty())
 	{
 		throw std::runtime_error("Invalid data found in the data file.csv file");
 	}
 }
 
 //Our File
-void BitcoinExchange::parseFile(const std::string &inputFilePath, std::map<std::string, float> &bitcoinPrices)
+void BitcoinExchange::takedata(const std::string &inputFilePath, std::map<std::string, float> &bitcoinPrices)
 {   
 	std::ifstream inputFile(inputFilePath.c_str());
 	if (!inputFile.is_open())
 		throw std::runtime_error("Error: could not open CSV file.");
 	std::string line;
+	if (!std::getline(inputFile, line)) 
+	{
+		inputFile.close();
+		throw std::runtime_error("Error: CSV file is empty or could not read the header.");
+	}
 	while (std::getline(inputFile, line))
 	{
 		std::stringstream ss(line);
 		std::string date;
 		std::string priceStr;
-		if (std::getline(ss, date, ',') && std::getline(ss, priceStr))
+		if (std::getline(ss, date, '|') && std::getline(ss, priceStr))
 		{
-			if (isValidDate(date) && isValidPrice(priceStr))
-			{
+			date = date.substr(0, date.find_last_not_of(" \t") + 1);  // Trim trailing
+			priceStr = priceStr.substr(priceStr.find_first_not_of(" \t"));  // Trim leading
+			// if (isValidDate(date) && isValidPrice(priceStr))
+			// {
 				char *end;
 				float f = std::strtof(priceStr.c_str(), &end);
-				if (*end != '\0')
-				{
-					inputFile.close();
-					throw std::runtime_error("Conversion to float failed");
-				}
-				if (f < 0 || f > 1000)
-				{
-					inputFile.close();
-					throw std::runtime_error("Number for user file was way too large");
-				}
+				// if (*end != '\0')
+				// {
+				// 	inputFile.close();
+				// 	throw std::runtime_error("Conversion to float failed");
+				// }
+				// if (f < 0 || f > 1000)
+				// {
+				// 	inputFile.close();
+				// 	throw std::runtime_error("Number for user file was way too large");
+				// }
 				bitcoinPrices[date] = f;
-			} 
-			else
-			{
-				inputFile.close();
-				throw std::runtime_error("Error in dates or data type on bitcoin prices entered");
-			}
+			// } 
+			// else
+			// {
+			// 	inputFile.close();
+			// 	throw std::runtime_error("Error in dates or data type on bitcoin prices entered");
+			// }
 		}
-		inputFile.close();
 	}
+	inputFile.close();
 	if (bitcoinPrices.empty())
 	{
 		throw std::runtime_error("Invalid data found in the input file, or no data at all");
@@ -185,18 +191,74 @@ void BitcoinExchange::testParsing(const std::map<std::string, float>& rates)
 {
     for (std::map<std::string, float>::const_iterator it = rates.begin(); it != rates.end(); ++it)
     {
-        const std::string &key = it->first;
-        float value = it->second;
+		const std::string &key = it->first;
+		float value = it->second;
         std::cout << key << " -> " << value << std::endl;
-    }
+	}
 }
 
 void    BitcoinExchange::bitByBit(const std::string &csvFilePath, const std::string &inputFilePath)
 {
-	(void)inputFilePath;
+	// (void)inputFilePath;
 	std::map<std::string, float> exchangeRates;
-	parseFile(csvFilePath, exchangeRates, 0);
-	testParsing(exchangeRates);
-	// std::map<std::string, float> bitcoinPrices;
-	// parseFile(inputFilePath, bitcoinPrices);
+	takedata(csvFilePath, exchangeRates, 0);
+	std::map<std::string, float> bitcoinPrices;
+	takedata(inputFilePath, bitcoinPrices);
+	execute(exchangeRates, bitcoinPrices);
+}
+
+// void	BitcoinExchange::execute(const std::map<std::string, float>& exchangeRates, const std::map<std::string, float>& bitcoinPrices)
+// {
+	
+// }
+
+
+void BitcoinExchange::execute(const std::map<std::string, float>& exchangeRates, const std::map<std::string, float>& bitcoinPrices)
+{
+    for (std::map<std::string, float>::const_iterator it = bitcoinPrices.begin(); it != bitcoinPrices.end(); ++it)
+    {
+        const std::string& date = it->first; // Iterator will point to the key here
+        std::string bitcoinValueStr;
+        std::stringstream ss;
+        ss << it->second; //Will point to the value here
+        ss >> bitcoinValueStr;
+        if (!isValidDate(date))
+        {
+            std::cout << "Error: Invalid date format for date " << date << ".\n";
+            continue;
+        }
+        if (!isValidPrice(bitcoinValueStr))
+        {
+            std::cout << "Error: Invalid bitcoin value for date " << date << ": " << bitcoinValueStr << ".\n";
+            continue;
+        }
+        float bitcoinValue = it->second;
+        if (bitcoinValue < 0 || bitcoinValue > 1000)
+        {
+            std::cout << "Error: Negative or invalid bitcoin value for date " << date << ".\n";
+            continue;
+        }
+        // Try to find the exact date or the lower bound (closest earlier date)
+        std::map<std::string, float>::const_iterator rateIt = exchangeRates.lower_bound(date);
+        // If the date is greater than all keys, adjust to the last valid date
+        if (rateIt == exchangeRates.begin() && rateIt->first != date)
+        {
+            std::cout << "Error: No valid exchange rate found for or before date " << date << ".\n";
+            continue;
+        }
+        // If lower_bound returns a date greater than the current date, move one step back to find the closest earlier date
+        if (rateIt == exchangeRates.end() || rateIt->first != date)
+        {
+            if (rateIt != exchangeRates.begin())
+                --rateIt;
+        }
+        float exchangeRate = rateIt->second;
+        float result = bitcoinValue * exchangeRate;
+       // Output the result
+        std::cout << "Date: " << date 
+                  << " (using exchange rate from: " << rateIt->first << "), "
+                  << "Bitcoin Value: " << bitcoinValue 
+                  << ", Exchange Rate: " << exchangeRate 
+                  << ", Result: " << result << std::endl;
+    }
 }
