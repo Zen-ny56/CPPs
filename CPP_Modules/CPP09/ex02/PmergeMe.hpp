@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <cstdlib>
+#include <algorithm>
 
 class PmergeMe
 {

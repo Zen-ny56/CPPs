@@ -61,6 +61,39 @@ void PmergeMe::processInput(const std::string& input)
         std::cout << "(" << pairs[i].first << ", " << pairs[i].second << ") ";
     }
     std::cout << std::endl;
+	std::vector<int> greaterElements;
+	for (size_t i = 0; i < pairs.size(); ++i)
+	{
+    	greaterElements.push_back(pairs[i].second);
+	}// Sort the greater elements using std::sort
+	std::sort(greaterElements.begin(), greaterElements.end());
+	// Display sorted greater elements (optional for debugging)
+	std::cout << "Sorted Greater Elements: ";
+	for (size_t i = 0; i < greaterElements.size(); ++i)
+	{
+    	std::cout << greaterElements[i] << " ";
+	}
+	std::cout << std::endl;
+	std::vector<int> S = greaterElements;  // Sequence 'S'
+	// Display the sequence S (optional for debugging)
+	std::cout << "Sequence S: ";
+	for (size_t i = 0; i < S.size(); ++i)
+	{
+    	std::cout << S[i] << " ";
+	}
+	std::cout << std::endl;
+	std::vector<int> pend;
+	for (size_t i = 0; i < pairs.size(); ++i)
+	{
+    	pend.push_back(pairs[i].first);
+	}
+	// Display the pend array (optional for debugging)
+	std::cout << "Pend: ";
+	for (size_t i = 0; i < pend.size(); ++i)
+	{
+    	std::cout << pend[i] << " ";
+	}
+	std::cout << std::endl;	
 }
 
 bool PmergeMe::isValidPositiveInteger(const std::string& str)
