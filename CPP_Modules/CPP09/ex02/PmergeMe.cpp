@@ -38,11 +38,29 @@ void PmergeMe::processInput(const std::string& input)
         }
     }
     std::cout << std::endl; // Move to the next line
-	std::cout << "Contents of integerList: ";
-	for (size_t i = 0; i < integerList.size(); ++i) {
-		std::cout << integerList[i] << " "; // Print each integer
-	}
-	std::cout << std::endl; // Move to the next line	
+	std::vector<std::pair<int, int> > pairs;
+	for (size_t i = 0; i < integerList.size(); i += 2)
+	{
+		if (i + 1 < integerList.size()) // Ensure we don't go out of bounds
+		{
+			if (integerList[i] > integerList[i + 1])
+				pairs.push_back(std::make_pair(integerList[i + 1], integerList[i]));
+			else
+				pairs.push_back(std::make_pair(integerList[i], integerList[i + 1]));
+		}
+		else
+		{
+			// Handle odd length by adding the last element as a pair with itself
+			pairs.push_back(std::make_pair(integerList[i], integerList[i]));
+		}
+    }
+    // Display pairs (optional for debugging)
+    std::cout << "Pairs (less, greater): ";
+    for (size_t i = 0; i < pairs.size(); ++i)
+    {
+        std::cout << "(" << pairs[i].first << ", " << pairs[i].second << ") ";
+    }
+    std::cout << std::endl;
 }
 
 bool PmergeMe::isValidPositiveInteger(const std::string& str)
