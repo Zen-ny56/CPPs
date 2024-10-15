@@ -21,6 +21,8 @@ class PmergeMe
 		static  void mergeSort(std::vector<int>& arr, int left, int right);
 		static  void processInput(const std::string& input);
 		static  std::vector<int> generateJacobsthal( int n);
+		static	std::vector<int> getValidIndices(const std::vector<int>& jacobsthal, int arraySize);
+		static	void fordJohnsonSort(const std::vector<int>& arr, const std::vector<int>& validIndices, const std::vector<int>& pend);
 	public:
 		static void meVec(const std::string& literal);
 		static void meDeq(const std::string& literal);

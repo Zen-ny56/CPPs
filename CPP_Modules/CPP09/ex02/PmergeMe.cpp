@@ -22,6 +22,44 @@ std::vector<int> PmergeMe::generateJacobsthal(int n)
     }
     return jacobsthal;
 }
+
+
+void PmergeMe::fordJohnsonSort(const std::vector<int>& S, const std::vector<int>& validIndices, const std::vector<int>& pend)
+{
+	(void)S;
+    // Create a vector to hold the extracted elements from arr based on validIndices
+    std::vector<int> extractedElements;
+
+    // Extract elements from arr based on validIndices
+    for (size_t i = 0; i < validIndices.size(); ++i)
+	{
+		if (static_cast<size_t>(validIndices[i]) < pend.size()){
+			extractedElements.push_back(pend[validIndices[i]]);
+		}
+	}
+    // At this point, extractedElements contains the elements from arr indexed by validIndices
+    // You can output or further process extractedElements as needed
+    std::cout << "Extracted Elements: ";
+    for (size_t i = 0; i < extractedElements.size(); ++i) {
+        std::cout << extractedElements[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+std::vector<int> PmergeMe::getValidIndices(const std::vector<int>& jacobsthal, int arraySize)
+{
+    std::vector<int> validIndices;
+    
+    // Use a traditional for loop with indexing
+    for (size_t i = 0; i < jacobsthal.size(); ++i)
+    {
+        int index = jacobsthal[i];
+        if (index < arraySize)
+            validIndices.push_back(index);
+    }
+    
+    return validIndices;
+}
 // Merge two halves of the array into a sorted array
 void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right)
 {
@@ -124,12 +162,12 @@ void PmergeMe::processInput(const std::string& input)
 		}
     }
     // Display pairs (optional for debugging)
-    std::cout << "Pairs (less, greater): ";
-    for (size_t i = 0; i < pairs.size(); ++i)
-    {
-        std::cout << "(" << pairs[i].first << ", " << pairs[i].second << ") ";
-    }
-    std::cout << std::endl;
+    // std::cout << "Pairs (less, greater): ";
+    // for (size_t i = 0; i < pairs.size(); ++i)
+    // {
+    //     std::cout << "(" << pairs[i].first << ", " << pairs[i].second << ") ";
+    // }
+    // std::cout << std::endl;
 	std::vector<int> greaterElements;
 	for (size_t i = 0; i < pairs.size(); ++i)
 	{
@@ -151,19 +189,32 @@ void PmergeMe::processInput(const std::string& input)
     	pend.push_back(pairs[i].first);
 	}
 	// // Display the pend array (optional for debugging)
-	// std::cout << "Pend: ";
-	// for (size_t i = 0; i < pend.size(); ++i)
-	// {
-    // 	std::cout << pend[i] << " ";
-	// }
-	// std::cout << std::endl;
-	std::vector<int> jacobsthalSequence = generateJacobsthal(pend.size());
-	std::cout << "Sequence: ";
-	for (size_t i = 0; i < jacobsthalSequence.size(); ++i)
+	std::cout << "Pend: ";
+	for (size_t i = 0; i < pend.size(); ++i)
 	{
-		std::cout << jacobsthalSequence[i] << " ";
+    	std::cout << pend[i] << " ";
 	}
 	std::cout << std::endl;
+	std::vector<int> jacobsthalSequence = generateJacobsthal(pend.size());
+	// std::cout << "Sequence: ";
+	// for (size_t i = 0; i < jacobsthalSequence.size(); ++i)
+	// {
+	// 	std::cout << jacobsthalSequence[i] << " ";
+	// }
+	// std::cout << std::endl;
+	std::vector<int> validIndices = getValidIndices(jacobsthalSequence, pend.size());
+	std::cout << "Valid Indices: ";
+	for (size_t i = 0; i < validIndices.size(); ++i)
+	{
+		std::cout << validIndices[i] << " ";
+	}
+	std::cout << std::endl;
+	std::vector<int> modifiedValidIndices;
+    for (size_t i = 2; i < validIndices.size(); ++i)
+	{
+		modifiedValidIndices.push_back(validIndices[i]);
+	}
+	fordJohnsonSort(greaterElements, modifiedValidIndices, pend);
 }
 
 bool PmergeMe::isValidPositiveInteger(const std::string& str)
