@@ -24,12 +24,10 @@ std::vector<int> PmergeMe::generateJacobsthal(int n)
 }
 
 
-void PmergeMe::fordJohnsonSort(const std::vector<int>& S, const std::vector<int>& validIndices, const std::vector<int>& pend)
+void PmergeMe::fordJohnsonSort(std::vector<int>& S, const std::vector<int>& validIndices, const std::vector<int>& pend)
 {
-	(void)S;
     // Create a vector to hold the extracted elements from arr based on validIndices
     std::vector<int> extractedElements;
-
     // Extract elements from arr based on validIndices
     for (size_t i = 0; i < validIndices.size(); ++i)
 	{
@@ -37,11 +35,31 @@ void PmergeMe::fordJohnsonSort(const std::vector<int>& S, const std::vector<int>
 			extractedElements.push_back(pend[validIndices[i]]);
 		}
 	}
-    // At this point, extractedElements contains the elements from arr indexed by validIndices
-    // You can output or further process extractedElements as needed
-    std::cout << "Extracted Elements: ";
-    for (size_t i = 0; i < extractedElements.size(); ++i) {
-        std::cout << extractedElements[i] << " ";
+    // std::cout << "Extracted Elements: ";
+    // for (size_t i = 0; i < extractedElements.size(); ++i) {
+    //     std::cout << extractedElements[i] << " ";
+    // }
+    // std::cout << std::endl;
+    for (size_t i = 0; i < extractedElements.size(); ++i)
+	{
+		int currentElement = extractedElements[i];
+		std::vector<int>::iterator pos = std::lower_bound(S.begin(), S.end(), currentElement);
+		S.insert(pos, currentElement);
+	}
+	for (size_t i = 0; i < pend.size(); ++i)
+	{
+		// Check if the current element is already in S by checking the last inserted position
+		if (std::find(extractedElements.begin(), extractedElements.end(), pend[i]) == extractedElements.end())
+		{
+			// If not found, use lower_bound to find the correct position
+			std::vector<int>::iterator pos = std::lower_bound(S.begin(), S.end(), pend[i]);
+			S.insert(pos, pend[i]); // Insert remaining element
+		}
+	}
+    // Output the modified S after insertion
+    std::cout << "Greater Elements after insertion: ";
+    for (size_t i = 0; i < S.size(); ++i) {
+        std::cout << S[i] << " ";
     }
     std::cout << std::endl;
 }
@@ -203,12 +221,12 @@ void PmergeMe::processInput(const std::string& input)
 	// }
 	// std::cout << std::endl;
 	std::vector<int> validIndices = getValidIndices(jacobsthalSequence, pend.size());
-	std::cout << "Valid Indices: ";
-	for (size_t i = 0; i < validIndices.size(); ++i)
-	{
-		std::cout << validIndices[i] << " ";
-	}
-	std::cout << std::endl;
+	// std::cout << "Valid Indices: ";
+	// for (size_t i = 0; i < validIndices.size(); ++i)
+	// {
+	// 	std::cout << validIndices[i] << " ";
+	// }
+	// std::cout << std::endl;
 	std::vector<int> modifiedValidIndices;
     for (size_t i = 2; i < validIndices.size(); ++i)
 	{
