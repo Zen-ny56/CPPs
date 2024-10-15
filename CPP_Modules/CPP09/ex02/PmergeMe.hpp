@@ -11,14 +11,17 @@
 
 class PmergeMe
 {
-    private:
-  	    PmergeMe();
-	    PmergeMe(const PmergeMe& other);
-	    PmergeMe& operator=(const PmergeMe& other);
-	    ~PmergeMe();
-        static bool isValidPositiveInteger(const std::string& str);
-        static void processInput(const std::string& input);
-    public:
-        static void meVec(const std::string& literal);
-        static void meDeq(const std::string& literal);
+	private:
+  		PmergeMe();
+		PmergeMe(const PmergeMe& other);
+		PmergeMe& operator=(const PmergeMe& other);
+		~PmergeMe();
+		static bool isValidPositiveInteger(const std::string& str);
+		static  void merge(std::vector<int>& arr, int left, int mid, int right);
+		static  void mergeSort(std::vector<int>& arr, int left, int right);
+		static  void processInput(const std::string& input);
+		static  std::vector<int> generateJacobsthal( int n);
+	public:
+		static void meVec(const std::string& literal);
+		static void meDeq(const std::string& literal);
 };
