@@ -24,7 +24,7 @@ std::vector<int> PmergeMe::generateJacobsthal(int n)
 }
 
 
-void PmergeMe::fordJohnsonSort(std::vector<int>& S, const std::vector<int>& validIndices, const std::vector<int>& pend)
+std::vector<int> PmergeMe::fordJohnsonSort(std::vector<int>& S, const std::vector<int>& validIndices, const std::vector<int>& pend)
 {
     // Create a vector to hold the extracted elements from arr based on validIndices
     std::vector<int> extractedElements;
@@ -57,11 +57,12 @@ void PmergeMe::fordJohnsonSort(std::vector<int>& S, const std::vector<int>& vali
 		}
 	}
     // Output the modified S after insertion
-    std::cout << "Greater Elements after insertion: ";
-    for (size_t i = 0; i < S.size(); ++i) {
-        std::cout << S[i] << " ";
-    }
-    std::cout << std::endl;
+    // std::cout << "Greater Elements after insertion: ";
+    // for (size_t i = 0; i < S.size(); ++i) {
+    //     std::cout << S[i] << " ";
+    // }
+    // std::cout << std::endl;
+	return S;
 }
 
 std::vector<int> PmergeMe::getValidIndices(const std::vector<int>& jacobsthal, int arraySize)
@@ -84,18 +85,14 @@ void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right)
 	// Find sizes of two subarrays to merge
 	int n1 = mid - left + 1; // Size of left subarray
 	int n2 = right - mid;     // Size of right subarray
-	// Create temporary arrays
 	std::vector<int> leftArr(n1), rightArr(n2);
-	// Copy data to temp arrays leftArr[] and rightArr[]
 	for (int i = 0; i < n1; ++i)
 		leftArr[i] = arr[left + i];
 	for (int i = 0; i < n2; ++i)
 		rightArr[i] = arr[mid + 1 + i];
-	// Merge the temporary arrays back into arr[left...right]
 	int i = 0;    // Initial index of leftArr
 	int j = 0;    // Initial index of rightArr
 	int k = left; // Initial index of merged subarray
-	// Pick the smaller of the elements in leftArr and rightArr
 	while (i < n1 && j < n2)
 	{
 		if (leftArr[i] <= rightArr[j])
@@ -108,14 +105,12 @@ void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right)
 		}
 		k++;
 	}
-    // Copy any remaining elements of leftArr[], if any
 	while (i < n1)
 	{
 		arr[k] = leftArr[i];
 		i++;
 		k++;
 	}
-    // Copy any remaining elements of rightArr[], if any
     while (j < n2) {
         arr[k] = rightArr[j];
         j++;
@@ -123,7 +118,6 @@ void PmergeMe::merge(std::vector<int>& arr, int left, int mid, int right)
     }
 }
 
-// Main merge sort function
 void PmergeMe::mergeSort(std::vector<int>& arr, int left, int right)
 {
 	// Base case: if there's only one element, it's already sorted
@@ -141,19 +135,27 @@ void PmergeMe::processInput(const std::string& input)
 	std::stringstream ss(input);
 	std::vector<int> integerList;
 	std::string token;
-	// Step 2: Tokenize the input and validate each token
 	while (ss >> token)
 	{
-		// Step 3: Validate the argument
 		if (!isValidPositiveInteger(token))
-			throw std::runtime_error("Error: Invalid input");  // Exit on error
+			throw std::runtime_error("Error: Invalid input");
 		int number = std::atoi(token.c_str());
 		if (number <= 0) {
-			throw std::runtime_error("Error: Invalid input");  // Exit on error
+			throw std::runtime_error("Error: Invalid input");
 		}
 		integerList.push_back(number);
 	}
 	// Step 4: Display the "Before" sequence
+	for (size_t i = 0; i < integerList.size(); ++i)
+	{
+		for (size_t j = i + 1; j < integerList.size(); ++j)
+		{
+			if (integerList[i] == integerList[j])
+				throw std::runtime_error("Error: Duplicate value found");
+        }
+    }
+	if (integerList.size() <= 1)
+		throw std::runtime_error("Error: Only one element is present");
 	std::cout << "Before: ";
 	for (size_t i = 0; i < integerList.size(); ++i)
 	{
@@ -164,6 +166,7 @@ void PmergeMe::processInput(const std::string& input)
     }
     std::cout << std::endl; // Move to the next line
 	std::vector<std::pair<int, int> > pairs;
+	std::vector<int> straggler;
 	for (size_t i = 0; i < integerList.size(); i += 2)
 	{
 		if (i + 1 < integerList.size()) // Ensure we don't go out of bounds
@@ -175,15 +178,20 @@ void PmergeMe::processInput(const std::string& input)
 		}
 		else
 		{
-			// Handle odd length by adding the last element as a pair with itself
-			pairs.push_back(std::make_pair(integerList[i], integerList[i]));
+			straggler.push_back(integerList[i]);
 		}
     }
     // Display pairs (optional for debugging)
-    // std::cout << "Pairs (less, greater): ";
+	 // std::cout << "Pairs (less, greater): ";
     // for (size_t i = 0; i < pairs.size(); ++i)
     // {
     //     std::cout << "(" << pairs[i].first << ", " << pairs[i].second << ") ";
+    // }
+    // std::cout << std::endl;
+	// std::cout << "Straggler: ";
+    // for (size_t i = 0; i < straggler.size(); ++i)
+    // {
+    //     std::cout << straggler[i] << std::endl;
     // }
     // std::cout << std::endl;
 	std::vector<int> greaterElements;
@@ -207,12 +215,12 @@ void PmergeMe::processInput(const std::string& input)
     	pend.push_back(pairs[i].first);
 	}
 	// // Display the pend array (optional for debugging)
-	std::cout << "Pend: ";
-	for (size_t i = 0; i < pend.size(); ++i)
-	{
-    	std::cout << pend[i] << " ";
-	}
-	std::cout << std::endl;
+	// std::cout << "Pend: ";
+	// for (size_t i = 0; i < pend.size(); ++i)
+	// {
+    // 	std::cout << pend[i] << " ";
+	// }
+	// std::cout << std::endl;
 	std::vector<int> jacobsthalSequence = generateJacobsthal(pend.size());
 	// std::cout << "Sequence: ";
 	// for (size_t i = 0; i < jacobsthalSequence.size(); ++i)
@@ -232,7 +240,17 @@ void PmergeMe::processInput(const std::string& input)
 	{
 		modifiedValidIndices.push_back(validIndices[i]);
 	}
-	fordJohnsonSort(greaterElements, modifiedValidIndices, pend);
+	S = fordJohnsonSort(greaterElements, modifiedValidIndices, pend);
+	if (!straggler.empty())
+	{
+		std::vector<int>::iterator pos = std::lower_bound(S.begin(), S.end(), straggler[0]);
+		S.insert(pos, straggler[0]);
+	}
+	std::cout << "Greater Elements after insertion: ";
+    for (size_t i = 0; i < S.size(); ++i) {
+        std::cout << S[i] << " ";
+    }
+	std::cout << std::endl;
 }
 
 bool PmergeMe::isValidPositiveInteger(const std::string& str)
