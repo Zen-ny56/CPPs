@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <algorithm>
+#include <ctime>     // For clock()
 
 class PmergeMe
 {

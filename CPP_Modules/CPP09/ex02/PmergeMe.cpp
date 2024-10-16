@@ -132,6 +132,7 @@ void PmergeMe::mergeSort(std::vector<int>& arr, int left, int right)
 
 void PmergeMe::processInput(const std::string& input)
 {
+	clock_t start = clock();
 	std::stringstream ss(input);
 	std::vector<int> integerList;
 	std::string token;
@@ -251,6 +252,9 @@ void PmergeMe::processInput(const std::string& input)
         std::cout << S[i] << " ";
     }
 	std::cout << std::endl;
+	clock_t end = clock();
+	double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6; // Convert to microseconds
+	std::cout << "Time to process a range of " << integerList.size() << " elements with std::vector : " << duration << " us" << std::endl;
 }
 
 bool PmergeMe::isValidPositiveInteger(const std::string& str)
