@@ -86,8 +86,7 @@ int	BitcoinExchange::isValidDate(const std::string& date)
 	return 1; // Valid date
 }
 
-//For data.csv file
-void BitcoinExchange::takedata(const std::string &csvFilePath, std::map<std::string, float> &rates, int a)
+void BitcoinExchange::takedata(const std::string &csvFilePath, std::multimap<std::string, float> &rates, int a)
 {
 	(void)a;
 	std::ifstream csvFile(csvFilePath.c_str());
@@ -108,7 +107,7 @@ void BitcoinExchange::takedata(const std::string &csvFilePath, std::map<std::str
 		{
 			char *end;
 			float f = std::strtof(priceStr.c_str(), &end);
-			rates[date] = f;
+			rates.insert(std::make_pair(date, f));  // Insert into multimap
 		}
 	}
 	csvFile.close();
@@ -118,9 +117,8 @@ void BitcoinExchange::takedata(const std::string &csvFilePath, std::map<std::str
 	}
 }
 
-//Our File
-void BitcoinExchange::takedata(const std::string &inputFilePath, std::map<std::string, float> &bitcoinPrices)
-{   
+void BitcoinExchange::takedata(const std::string &inputFilePath, std::multimap<std::string, float> &bitcoinPrices)
+{
 	std::ifstream inputFile(inputFilePath.c_str());
 	if (!inputFile.is_open())
 		throw std::runtime_error("Error: could not open CSV file.");
@@ -137,11 +135,24 @@ void BitcoinExchange::takedata(const std::string &inputFilePath, std::map<std::s
 		std::string priceStr;
 		if (std::getline(ss, date, '|') && std::getline(ss, priceStr))
 		{
-			date = date.substr(0, date.find_last_not_of(" \t") + 1);  // Trim trailing
-			priceStr = priceStr.substr(priceStr.find_first_not_of(" \t"));  // Trim leading
+			date = date.substr(0, date.find_last_not_of(" \t") + 1);
+			priceStr = priceStr.substr(priceStr.find_first_not_of(" \t"));
 			char *end;
-			float f = std::strtof(priceStr.c_str(), &end);
-			bitcoinPrices[date] = f;
+			float f;
+			if (isInteger(priceStr))
+			{
+				long i = std::strtol(priceStr.c_str(), &end, 10);
+				f = static_cast<float>(i);
+				if (*end != '\0' || i > 1000 || i < 0)
+					f = -1;
+			}
+			else
+			{
+				f = std::strtof(priceStr.c_str(), &end);
+				if (*end != '\0' || f < 0 || f > 1000)
+					f = -1;
+			}
+			bitcoinPrices.insert(std::make_pair(date, f));
 		}
 	}
 	inputFile.close();
@@ -151,73 +162,50 @@ void BitcoinExchange::takedata(const std::string &inputFilePath, std::map<std::s
 	}
 }
 
-void BitcoinExchange::testParsing(const std::map<std::string, float>& rates)
-{
-    for (std::map<std::string, float>::const_iterator it = rates.begin(); it != rates.end(); ++it)
-    {
-		const std::string &key = it->first;
-		float value = it->second;
-        std::cout << key << " -> " << value << std::endl;
-	}
-}
-
 void    BitcoinExchange::bitByBit(const std::string &csvFilePath, const std::string &inputFilePath)
 {
 	// (void)inputFilePath;
-	std::map<std::string, float> exchangeRates;
+	std::multimap<std::string, float> exchangeRates;
 	takedata(csvFilePath, exchangeRates, 0);
-	std::map<std::string, float> bitcoinPrices;
+	std::multimap<std::string, float> bitcoinPrices;
 	takedata(inputFilePath, bitcoinPrices);
-	testParsing(bitcoinPrices);
+	// testParsing(bitcoinPrices);
 	execute(exchangeRates, bitcoinPrices);
 }
 
-void BitcoinExchange::execute(const std::map<std::string, float>& exchangeRates, const std::map<std::string, float>& bitcoinPrices)
+void BitcoinExchange::execute(const std::multimap<std::string, float>& exchangeRates, const std::multimap<std::string, float>& bitcoinPrices)
 {
-    for (std::map<std::string, float>::const_iterator it = bitcoinPrices.begin(); it != bitcoinPrices.end(); ++it)
-    {
-        const std::string& date = it->first;
-        std::string bitcoinValueStr;
-        std::stringstream ss;
-        ss << it->second;
-        ss >> bitcoinValueStr;
-        if (!isValidDate(date))
-        {
-            std::cout << "Error: Invalid date format for date " << date << ".\n";
-            continue;
-        }
-        if (!isValidPrice(bitcoinValueStr))
-        {
-            std::cout << "Error: Invalid bitcoin value for date " << date << ": " << bitcoinValueStr << ".\n";
-            continue;
-        }
-        float bitcoinValue = it->second;
-        if (bitcoinValue < 0 || bitcoinValue > 1000)
-        {
-            std::cout << "Error: Invalid bitcoin value " << date << ".\n";
-            continue;
-        }
-        // Try to find the exact date or the lower bound (closest earlier date)
-        std::map<std::string, float>::const_iterator rateIt = exchangeRates.lower_bound(date);
-        // If the date is greater than all keys, adjust to the last valid date
-        if (rateIt == exchangeRates.begin() && rateIt->first != date)
-        {
-            std::cout << "Error: No valid exchange rate found for or before date " << date << ".\n";
-            continue;
-        }
-        // If we put a greater date that is not here or the date is simply greater than our date will decrement rateIt by one key.
-        if (rateIt == exchangeRates.end() || rateIt->first != date) 
-        {
-            if (rateIt != exchangeRates.begin())
-                --rateIt;
-        }
-        float exchangeRate = rateIt->second;
-        float result = bitcoinValue * exchangeRate;
-       // Output the result
-        std::cout << "Date: " << date 
-                  << " (using exchange rate from: " << rateIt->first << "), "
-                  << "Bitcoin Value: " << bitcoinValue 
-                  << ", Exchange Rate: " << exchangeRate 
-                  << ", Result: " << result << std::endl;
+	for (std::multimap<std::string, float>::const_iterator it = bitcoinPrices.begin(); it != bitcoinPrices.end(); ++it)
+	{
+		const std::string& date = it->first;
+		std::string bitcoinValueStr;
+		std::stringstream ss;
+		ss << it->second;
+		ss >> bitcoinValueStr;
+		if (!isValidDate(date))
+		{
+			std::cout << "Error: Invalid date format for date " << date << std::endl;
+			continue;
+		}
+		float bitcoinValue = it->second;
+		if (bitcoinValue < 0 || bitcoinValue > 1000)
+		{
+			std::cout << "Error: Invalid bitcoin value " << date << std::endl;
+			continue;
+		}
+		std::multimap<std::string, float>::const_iterator rateIt = exchangeRates.lower_bound(date);
+		if (rateIt == exchangeRates.begin() && rateIt->first != date)
+		{
+			std::cout << "Error: No valid exchange rate found for or before date " << date << std::endl;
+			continue;
+		}
+		if (rateIt == exchangeRates.end() || rateIt->first != date)
+		{
+			if (rateIt != exchangeRates.begin())
+				--rateIt;
+		}
+		float exchangeRate = rateIt->second;
+		float result = bitcoinValue * exchangeRate;
+		std::cout << date << " => " << bitcoinValue << " = " << result << std::endl;
     }
 }
