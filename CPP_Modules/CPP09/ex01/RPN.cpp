@@ -28,27 +28,24 @@ int RPN::evaluate(const std::string &expression)
 	std::stringstream ss(expression);
 	std::string token;
 
-	// Tokenization loop: extracting each token from the input
 	while (ss >> token)
 	{
-		// Handle operator
 		if (token.length() == 1 && isOperator(token[0]))
 		{
-			if (stack.size() < 2)  // At least 2 numbers required to perform operation
+			if (stack.size() < 2)
 				throw std::runtime_error("Error: Too few operands for operation");
 			int b = stack.top(); stack.pop();
 			int a = stack.top(); stack.pop();
 			int result = performOperation(a, b, token[0]);
-			stack.push(result);  // Push the result of operation back to the stack
+			stack.push(result);
 		}
 		else if (token.length() == 1 && isNumber(token[0])) {
-			stack.push(token[0] - '0');  // Convert char to int and push to stack
+			stack.push(token[0] - '0');
 		}
 		else {
 			throw std::runtime_error("Error: Invalid token in input");
 		}
 	}
-	// After processing all tokens, there should be exactly one element in the stack
 	if (stack.size() != 1)
 		throw std::runtime_error("Error: Invalid expression");
 
