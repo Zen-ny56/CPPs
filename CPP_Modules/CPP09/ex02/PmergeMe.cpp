@@ -140,7 +140,7 @@ void PmergeMe::processInput(const std::string& input)
 		if (!isValidPositiveInteger(token))
 			throw std::runtime_error("Error: Invalid input");
 		int number = std::atoi(token.c_str());
-		if (number <= 0) {
+		if (number < 0) {
 			throw std::runtime_error("Error: Invalid input");
 		}
 		integerList.push_back(number);
