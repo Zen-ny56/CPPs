@@ -2,14 +2,47 @@
 
 void PmergeMe::meVec(const std::string& literal)
 {
-	processInput(literal);
+	std::stringstream ss(literal);
+	std::vector<int> integerList;
+	std::string token;
+	while (ss >> token)
+	{
+		if (!isValidPositiveInteger(token))
+			throw std::runtime_error("Error: Invalid input");
+		int number = std::atoi(token.c_str());
+		if (number < 0) {
+			throw std::runtime_error("Error: Invalid input");
+		}
+		integerList.push_back(number);
+	}
+	// Step 4: Display the "Before" sequence
+	for (size_t i = 0; i < integerList.size(); ++i)
+	{
+		for (size_t j = i + 1; j < integerList.size(); ++j)
+		{
+			if (integerList[i] == integerList[j])
+				throw std::runtime_error("Error: Duplicate value found");
+        }
+    }
+	if (integerList.size() <= 1)
+		throw std::runtime_error("Error: Only one element is present");
+	std::cout << "Before (std::vector): ";
+	for (size_t i = 0; i < integerList.size(); ++i)
+	{
+		std::cout << integerList[i];
+		if (i < integerList.size() - 1) {
+			std::cout << " ";  // Add space between numbers
+        }
+    }
+    std::cout << std::endl; // Move to the next line
+	std::vector<int> S = processInput(integerList);
+	std::cout << "After (std::vector): ";
+    for (size_t i = 0; i < S.size(); ++i) {
+        std::cout << S[i] << " ";
+    }
+	std::cout << std::endl;
 }
 
-void PmergeMe::meDeq(const std::string& literal)
-{
-	// You can implement similar logic here for deque if needed
-	processInput(literal);  // Just for demonstration; you might want to adjust this
-}
 std::vector<int> PmergeMe::generateJacobsthal(int n)
 {
     std::vector<int> jacobsthal(n);
@@ -130,42 +163,9 @@ void PmergeMe::mergeSort(std::vector<int>& arr, int left, int right)
 	}
 }
 
-void PmergeMe::processInput(const std::string& input)
+std::vector<int> PmergeMe::processInput(const std::vector<int>& integerList)
 {
 	clock_t start = clock();
-	std::stringstream ss(input);
-	std::vector<int> integerList;
-	std::string token;
-	while (ss >> token)
-	{
-		if (!isValidPositiveInteger(token))
-			throw std::runtime_error("Error: Invalid input");
-		int number = std::atoi(token.c_str());
-		if (number < 0) {
-			throw std::runtime_error("Error: Invalid input");
-		}
-		integerList.push_back(number);
-	}
-	// Step 4: Display the "Before" sequence
-	for (size_t i = 0; i < integerList.size(); ++i)
-	{
-		for (size_t j = i + 1; j < integerList.size(); ++j)
-		{
-			if (integerList[i] == integerList[j])
-				throw std::runtime_error("Error: Duplicate value found");
-        }
-    }
-	if (integerList.size() <= 1)
-		throw std::runtime_error("Error: Only one element is present");
-	std::cout << "Before: ";
-	for (size_t i = 0; i < integerList.size(); ++i)
-	{
-		std::cout << integerList[i];
-		if (i < integerList.size() - 1) {
-			std::cout << " ";  // Add space between numbers
-        }
-    }
-    std::cout << std::endl; // Move to the next line
 	std::vector<std::pair<int, int> > pairs;
 	std::vector<int> straggler;
 	for (size_t i = 0; i < integerList.size(); i += 2)
@@ -247,14 +247,15 @@ void PmergeMe::processInput(const std::string& input)
 		std::vector<int>::iterator pos = std::lower_bound(S.begin(), S.end(), straggler[0]);
 		S.insert(pos, straggler[0]);
 	}
-	std::cout << "Greater Elements after insertion: ";
-    for (size_t i = 0; i < S.size(); ++i) {
-        std::cout << S[i] << " ";
-    }
-	std::cout << std::endl;
+	// std::cout << "Greater Elements after insertion: ";
+    // for (size_t i = 0; i < S.size(); ++i) {
+    //     std::cout << S[i] << " ";
+    // }
+	// std::cout << std::endl;
 	clock_t end = clock();
 	double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6; // Convert to microseconds
 	std::cout << "Time to process a range of " << integerList.size() << " elements with std::vector : " << duration << " us" << std::endl;
+	return (S);
 }
 
 bool PmergeMe::isValidPositiveInteger(const std::string& str)
@@ -265,4 +266,225 @@ bool PmergeMe::isValidPositiveInteger(const std::string& str)
 		if (!std::isdigit(str[i])) return false;
 	}
 	return true;
+}
+
+//LIST IMPLEMENTATION
+
+std::list<int> PmergeMe::fordJohnsonSort(std::list<int>& S, const std::list<int>& validIndices, const std::list<int>& pend)
+{
+	std::list<int>::const_iterator pendIt = pend.begin();
+	for (std::list<int>::const_iterator idxIt = validIndices.begin(); idxIt != validIndices.end(); ++idxIt)
+	{
+		int value = *pendIt;
+
+		std::list<int>::iterator pos = S.begin();
+		for (; pos != S.end(); ++pos)
+		{
+			if (*pos > value)
+				break;
+		}
+		S.insert(pos, value);
+		++pendIt;
+	}
+	pendIt = pend.begin();
+	while (pendIt != pend.end())
+	{
+		int currentElement = *pendIt;
+		if (std::find(S.begin(), S.end(), currentElement) == S.end())
+		{
+			std::list<int>::iterator pos = S.begin();
+			for (; pos != S.end(); ++pos)
+			{
+				if (*pos > currentElement)
+					break;
+			}
+			S.insert(pos, currentElement);
+		}
+		++pendIt;
+	}
+	return S;
+}
+
+std::list<int> PmergeMe::getValidIndices(const std::list<int>& jacobsthal, int arraySize)
+{
+    std::list<int> validIndices;
+    for (std::list<int>::const_iterator it = jacobsthal.begin(); it != jacobsthal.end(); ++it)
+    {
+        int index = *it;
+        if (index < arraySize)
+            validIndices.push_back(index);
+    }
+
+    return validIndices;
+}
+
+std::list<int> PmergeMe::generateJacobsthal(int n, int f)
+{
+	(void) f;
+    std::list<int> jacobsthal;
+    jacobsthal.push_back(0); // J(0)
+    if (n > 1)
+        jacobsthal.push_back(1); // J(1)
+
+    int prev1 = 1, prev2 = 0;
+    for (int i = 2; i < n; ++i)
+    {
+        int current = prev1 + 2 * prev2;
+        jacobsthal.push_back(current);
+        prev2 = prev1;
+        prev1 = current;
+    }
+    return jacobsthal;
+}
+
+void PmergeMe::mergeSort(std::list<int>& lst)
+{
+    if (lst.size() <= 1)
+		return;
+    std::list<int>::iterator mid = lst.begin();
+    std::advance(mid, lst.size() / 2);
+    std::list<int> left(lst.begin(), mid);
+    std::list<int> right(mid, lst.end());
+
+    mergeSort(left);
+    mergeSort(right);
+    lst.clear();
+    // Manual merging instead of using std::back_inserter
+    std::list<int>::iterator it_left = left.begin();
+    std::list<int>::iterator it_right = right.begin();
+
+    while (it_left != left.end() && it_right != right.end())
+    {
+        if (*it_left < *it_right)
+        {
+            lst.push_back(*it_left);
+            ++it_left;
+        }
+        else
+        {
+            lst.push_back(*it_right);
+            ++it_right;
+        }
+    }
+    // Insert any remaining elements from the left list
+    while (it_left != left.end())
+    {
+        lst.push_back(*it_left);
+        ++it_left;
+    }
+
+    // Insert any remaining elements from the right list
+    while (it_right != right.end())
+    {
+        lst.push_back(*it_right);
+        ++it_right;
+    }
+}
+
+std::list<int> PmergeMe::processInput(const std::list<int>& integerList)
+{
+	clock_t start = clock();
+	std::list<std::pair<int, int> > pairs;
+    std::list<int> straggler;
+    std::list<int>::const_iterator it = integerList.begin();
+    while (it != integerList.end())
+    {
+		int first = *it;
+		++it;
+		if (it != integerList.end()) // Ensure we don't go out of bounds
+        {
+			int second = *it;
+			if (first > second)
+				pairs.push_back(std::make_pair(second, first));
+			else
+				pairs.push_back(std::make_pair(first, second));
+			++it;
+		}
+		else
+			straggler.push_back(first);
+    }
+	std::list<int> greaterElements;
+	for (std::list<std::pair<int, int> >::iterator it = pairs.begin(); it != pairs.end(); ++it)
+        greaterElements.push_back(it->second);
+	//Merge
+    mergeSort(greaterElements);
+    std::list<int> S = greaterElements;
+	std::list<int> pend;
+    for (std::list<std::pair<int, int> >::iterator it = pairs.begin(); it != pairs.end(); ++it)
+        pend.push_back(it->first);
+    std::list<int> jacobsthalSequence = generateJacobsthal(pend.size(), 0);
+    std::list<int> validIndices = getValidIndices(jacobsthalSequence, pend.size());
+    // Modified valid indices for the Ford-Johnson sort
+    std::list<int>::iterator idxStart = validIndices.begin();
+    ++idxStart;
+    ++idxStart; // Equivalent to std::next(validIndices.begin(), 2)
+    std::list<int> modifiedValidIndices(idxStart, validIndices.end());
+    S = fordJohnsonSort(S, modifiedValidIndices, pend);
+    // Handling straggler if it exists
+    if (!straggler.empty())
+    {
+        std::list<int>::iterator pos = S.begin();
+        for (; pos != S.end(); ++pos)
+        {
+            if (*pos > straggler.front())
+                break;
+        }
+        S.insert(pos, straggler.front());
+    }
+    clock_t end = clock();
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6; // Convert to microseconds
+    std::cout << "Time to process a range of " << integerList.size() << " elements using std::list: " << duration << " us" << std::endl;
+	return (S);
+}
+
+void PmergeMe::meList(const std::string& literal)
+{
+	// (void)literal;
+	 std::stringstream ss(literal);
+    std::list<int> integerList;
+    std::string token;
+    while (ss >> token)
+    {
+        if (!isValidPositiveInteger(token))
+            throw std::runtime_error("Error: Invalid input");
+        int number = std::atoi(token.c_str());
+        if (number < 0) {
+            throw std::runtime_error("Error: Invalid input");
+        }
+        integerList.push_back(number);
+    }
+    // Check for duplicates manually without using std::next
+    for (std::list<int>::iterator it1 = integerList.begin(); it1 != integerList.end(); ++it1)
+    {
+        std::list<int>::iterator it2 = it1;
+        ++it2;
+        for (; it2 != integerList.end(); ++it2)
+        {
+            if (*it1 == *it2)
+                throw std::runtime_error("Error: Duplicate value found");
+        }
+    }
+	if (integerList.size() <= 1)
+        throw std::runtime_error("Error: Only one element is present");
+	std::cout << "Before (std::list): ";
+	for (std::list<int>::iterator it = integerList.begin(); it != integerList.end(); ++it)
+	{
+		std::cout << *it;
+		// Create a temporary iterator to check if the current element is the last one
+		std::list<int>::iterator temp = it;
+		if (++temp != integerList.end())
+			std::cout << " ";  // Print space only if it's not the last element
+	}
+    std::cout << std::endl;
+	std::list<int> S = processInput(integerList);  // Just for demonstration; you might want to adjust this
+	std::cout << "After (std::list): ";
+	for (std::list<int>::iterator it = S.begin(); it != S.end(); ++it)
+	{
+		std::cout << *it;
+		// Create a temporary iterator to check if the current element is the last one
+		std::list<int>::iterator temp = it;
+		if (++temp != S.end())
+			std::cout << " ";  // Print space only if it's not the last element
+	}
+	std::cout << std::endl;
 }
