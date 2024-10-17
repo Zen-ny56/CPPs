@@ -13,7 +13,7 @@ int main(int ac, char **av)
 			if (i < ac - 1)
 				input += " "; // Add space between numbers
         }
-		// PmergeMe::meVec(input); // Process the concatenated input
+		PmergeMe::meVec(input); // Process the concatenated input
 		PmergeMe::meList(input);
 	}
 	catch (const std::exception& e)

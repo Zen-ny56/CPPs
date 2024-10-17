@@ -1,6 +1,5 @@
 #include "PmergeMe.hpp"
 
-/// vvvvvvvvvveeeeeeeecccccccttttttoooooorr
 void PmergeMe::meVec(const std::string& literal)
 {
 	std::stringstream ss(literal);
@@ -27,7 +26,7 @@ void PmergeMe::meVec(const std::string& literal)
     }
 	if (integerList.size() <= 1)
 		throw std::runtime_error("Error: Only one element is present");
-	std::cout << "Before: ";
+	std::cout << "Before (std::vector): ";
 	for (size_t i = 0; i < integerList.size(); ++i)
 	{
 		std::cout << integerList[i];
@@ -37,7 +36,7 @@ void PmergeMe::meVec(const std::string& literal)
     }
     std::cout << std::endl; // Move to the next line
 	std::vector<int> S = processInput(integerList);
-	std::cout << "Greater Elements after insertion: ";
+	std::cout << "After (std::vector): ";
     for (size_t i = 0; i < S.size(); ++i) {
         std::cout << S[i] << " ";
     }
@@ -273,21 +272,37 @@ bool PmergeMe::isValidPositiveInteger(const std::string& str)
 
 std::list<int> PmergeMe::fordJohnsonSort(std::list<int>& S, const std::list<int>& validIndices, const std::list<int>& pend)
 {
-    std::list<int>::const_iterator pendIt = pend.begin();
-    for (std::list<int>::const_iterator idxIt = validIndices.begin(); idxIt != validIndices.end(); ++idxIt)
-    {
-        int value = *pendIt;
+	std::list<int>::const_iterator pendIt = pend.begin();
+	for (std::list<int>::const_iterator idxIt = validIndices.begin(); idxIt != validIndices.end(); ++idxIt)
+	{
+		int value = *pendIt;
 
-        std::list<int>::iterator pos = S.begin();
-        for (; pos != S.end(); ++pos)
-        {
-            if (*pos > value)
-                break;
-        }
-        S.insert(pos, value);
-        ++pendIt;
-    }
-    return S;
+		std::list<int>::iterator pos = S.begin();
+		for (; pos != S.end(); ++pos)
+		{
+			if (*pos > value)
+				break;
+		}
+		S.insert(pos, value);
+		++pendIt;
+	}
+	pendIt = pend.begin();
+	while (pendIt != pend.end())
+	{
+		int currentElement = *pendIt;
+		if (std::find(S.begin(), S.end(), currentElement) == S.end())
+		{
+			std::list<int>::iterator pos = S.begin();
+			for (; pos != S.end(); ++pos)
+			{
+				if (*pos > currentElement)
+					break;
+			}
+			S.insert(pos, currentElement);
+		}
+		++pendIt;
+	}
+	return S;
 }
 
 std::list<int> PmergeMe::getValidIndices(const std::list<int>& jacobsthal, int arraySize)
@@ -351,7 +366,6 @@ void PmergeMe::mergeSort(std::list<int>& lst)
             ++it_right;
         }
     }
-
     // Insert any remaining elements from the left list
     while (it_left != left.end())
     {
@@ -417,14 +431,9 @@ std::list<int> PmergeMe::processInput(const std::list<int>& integerList)
         }
         S.insert(pos, straggler.front());
     }
-    std::cout << "Greater Elements after insertion: ";
-    for (std::list<int>::iterator it = S.begin(); it != S.end(); ++it){
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
     clock_t end = clock();
     double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6; // Convert to microseconds
-    std::cout << "Time to process a range of " << integerList.size() << " elements: " << duration << " us" << std::endl;
+    std::cout << "Time to process a range of " << integerList.size() << " elements using std::list: " << duration << " us" << std::endl;
 	return (S);
 }
 
@@ -457,7 +466,7 @@ void PmergeMe::meList(const std::string& literal)
     }
 	if (integerList.size() <= 1)
         throw std::runtime_error("Error: Only one element is present");
-	std::cout << "Before: ";
+	std::cout << "Before (std::list): ";
 	for (std::list<int>::iterator it = integerList.begin(); it != integerList.end(); ++it)
 	{
 		std::cout << *it;
@@ -468,7 +477,7 @@ void PmergeMe::meList(const std::string& literal)
 	}
     std::cout << std::endl;
 	std::list<int> S = processInput(integerList);  // Just for demonstration; you might want to adjust this
-	std::cout << "After: ";
+	std::cout << "After (std::list): ";
 	for (std::list<int>::iterator it = S.begin(); it != S.end(); ++it)
 	{
 		std::cout << *it;
