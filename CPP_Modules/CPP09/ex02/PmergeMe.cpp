@@ -453,7 +453,6 @@ void PmergeMe::meList(const std::string& literal)
         }
         integerList.push_back(number);
     }
-    // Check for duplicates manually without using std::next
     for (std::list<int>::iterator it1 = integerList.begin(); it1 != integerList.end(); ++it1)
     {
         std::list<int>::iterator it2 = it1;
@@ -470,13 +469,12 @@ void PmergeMe::meList(const std::string& literal)
 	for (std::list<int>::iterator it = integerList.begin(); it != integerList.end(); ++it)
 	{
 		std::cout << *it;
-		// Create a temporary iterator to check if the current element is the last one
 		std::list<int>::iterator temp = it;
 		if (++temp != integerList.end())
 			std::cout << " ";  // Print space only if it's not the last element
 	}
     std::cout << std::endl;
-	std::list<int> S = processInput(integerList);  // Just for demonstration; you might want to adjust this
+	std::list<int> S = processInput(integerList);
 	std::cout << "After (std::list): ";
 	for (std::list<int>::iterator it = S.begin(); it != S.end(); ++it)
 	{
